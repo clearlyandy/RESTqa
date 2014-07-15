@@ -1,0 +1,17 @@
+<section data-ng-controller="WebServicesController" data-ng-init="find()">
+    <span data-ng-repeat="webservice in webservices">
+        <h2>
+        <a data-ng-href="#!/web-services/{{webservice._id}}">{{webservice.title}}</a>
+        <span data-ng-if="hasAuthorization(webservice)">
+        <a class="btn" href="/#!/webservices/{{webservice._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(webservice);">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+        </span>
+        </h2>
+        <div>{{webservice.content}}</div>
+    </span>
+    <h1 data-ng-hide="!webservices || webservices.length">No webservices yet. <br> Why don't you <a href="/#!/web-services/create">Create One</a>?</h1>
+</section>

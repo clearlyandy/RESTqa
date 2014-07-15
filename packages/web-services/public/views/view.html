@@ -1,0 +1,14 @@
+<section data-ng-controller="WebServicesController" data-ng-init="findOne()">
+    <span>{{webservice.created | date:'medium'}}</span> /
+    <span>{{webservice.user.name}}</span>
+    <h2>{{webservice.title}}</h2>
+    <div data-ng-if="hasAuthorization(webservice)">
+        <a class="btn" href="/#!/webservices/{{webservice._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn" data-ng-click="remove(webservice);">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+    <div>{{webservice.content}}</div>
+</section>
