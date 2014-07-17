@@ -16,15 +16,13 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         $scope.create = function(isValid) {
             if (isValid) {
                 var webservice = new WebServices({
-                    title: this.title,
-                    tests: this.content
+                    name: this.name,
+                    description: this.description,
+                    endpoint: this.endpoint
                 });
                 webservice.$save(function(response) {
-                $location.path('web-services/' + response._id);
+                    $location.path('web-services/' + response._id);
                 });
-
-                this.title = '';
-                this.content = '';
             } else {
                 $scope.submitted = true;
             }
@@ -32,13 +30,9 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
 
         $scope.remove = function(webservice) {
             if (webservice) {
-                webservice.$remove();
-
-                for (var i in $scope.webservices) {
-                    if ($scope.webservices[i] === webservice) {
-                        $scope.webservices.splice(i, 1);
-                    }
-                }
+                webservice.$remove(function(response) {
+                    $location.path('web-services');
+                });
             } else {
                 $scope.webservice.$remove(function(response) {
                     $location.path('web-services');

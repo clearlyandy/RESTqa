@@ -15,13 +15,18 @@ var WebServiceSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    title: {
+    name: {
         type: String,
         required: true,
         trim: true
     },
-    tests: {
+    description: {
         type: String,
+        trim: true
+    },
+    endpoint: {
+        type: String,
+        required: true,
         trim: true
     },
     user: {
@@ -33,9 +38,13 @@ var WebServiceSchema = new Schema({
 /**
  * Validations
  */
-WebServiceSchema.path('title').validate(function(title) {
-    return !!title;
-}, 'Title cannot be blank');
+WebServiceSchema.path('name').validate(function(name) {
+    return !!name;
+}, 'Name cannot be blank');
+
+WebServiceSchema.path('endpoint').validate(function(endpoint) {
+    return !!endpoint;
+}, 'Endpoint cannot be blank');
 
 /**
  * Statics
