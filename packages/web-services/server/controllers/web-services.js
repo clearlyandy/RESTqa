@@ -85,7 +85,7 @@ exports.show = function(req, res) {
  * List of Web Services
  */
 exports.all = function(req, res) {
-    WebService.find().sort('-created').populate('user', 'name username').exec(function(err, webservices) {
+    WebService.find().sort('+created').populate('user', 'name username').exec(function(err, webservices) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the web services'

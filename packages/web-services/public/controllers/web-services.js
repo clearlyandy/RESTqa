@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mean.web-services').controller('WebServicesController', ['$scope', '$stateParams', '$location', 'Global', 'WebServices',
+angular.module('mean.web-services').controller('WebServicesController', ['$scope', '$stateParams', '$location', 'Global', 'WebServices', 'Requests',
 
-    function($scope, $stateParams, $location, Global, WebServices) {
+    function($scope, $stateParams, $location, Global, WebServices, Requests) {
         $scope.global = Global;
         $scope.package = {
             name: 'web-services'
@@ -67,6 +67,14 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 webserviceId: $stateParams.webserviceId
             }, function(webservice) {
                 $scope.webservice = webservice;
+            });
+        };
+
+        $scope.findRequests = function() {
+            Requests.query({
+                webserviceId: $stateParams.webserviceId
+            }, function(requests) {
+                $scope.requests = requests;
             });
         };
     }

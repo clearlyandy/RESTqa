@@ -1,20 +1,38 @@
 <section data-ng-controller="WebServicesController" data-ng-init="findOne()">
-    <div class="pull-left">
-        <h2 class="pull-left">{{webservice.name}}</h2>
+   <div class="col-md-12">
+        <div class="pull-left">
+            <h2 class="pull-left">{{webservice.name}}</h2>
+        </div>
+        <div class="pull-left">
+            <a class="btn" href="/#!/web-services/{{webservice._id}}/edit">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+        </div>
+        <div class="pull-left">
+            <a class="btn" data-ng-click="remove(webservice);">
+                <i class="glyphicon glyphicon-trash"></i>
+            </a>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-success" href="/#!/web-services/{{webservice._id}}/requests/create">Add Request</a>
+        </div>
+        <table class="table" data-ng-init="findRequests()">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Request</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="request in requests">
+                    <th>
+                        <p><a data-ng-href="#!/web-services/{{webservice._id}}/requests/{{request._id}}">{{request.name}}</a></p>
+                    </th>
+                    <th>
+                        <p>{{request.payload}}</p>
+                    </th>
+                <tr>
+            </tbody>
+        </table>
     </div>
-    <div class="pull-left">
-        <a class="btn" href="/#!/web-services/{{webservice._id}}/edit">
-            <i class="glyphicon glyphicon-edit"></i>
-        </a>
-    </div>
-    <div class="pull-left">
-        <a class="btn" data-ng-click="remove(webservice);">
-            <i class="glyphicon glyphicon-trash"></i>
-        </a>
-    </div>
-    <div class="pull-right">
-        <a class="btn btn-success" href="/#!/web-services/{{webservice._id}}/requests/create">Add Request</a>
-    </div>
-
-
 </section>

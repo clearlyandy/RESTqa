@@ -1,14 +1,12 @@
 <section data-ng-controller="WebServicesController">
-    <div class="col-md-12">
-        <h2>
-            Add Web Service
-        </h2>
-    </div>
+    <h2>
+        Add Web Service
+    </h2>
     <div class="col-md-12">
         <form name="webservicesForm" class="form-horizontal" role="form" data-ng-submit="create(webservicesForm.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' : submitted && webservicesForm.name.$invalid }">
-                <label mean-token="'create-webservice-name'" class="col-md-1 control-label">Name</label>
-                <div class="col-md-12">
+                <label mean-token="'create-webservice-name'" class="control-label">Name</label>
+                <div>
                     <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="Name" required>
                     <div ng-show="submitted && webservicesForm.name.$invalid" class="help-block">
                         <p ng-show="webservicesForm.name.$error.required">Name is required</p>
@@ -16,8 +14,8 @@
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : submitted && webservicesForm.endpoint.$invalid }">
-                <label mean-token="'create-webservice-endpoint'" class="col-md-1 control-label">Endpoint</label>
-                <div class="col-md-12">
+                <label mean-token="'create-webservice-endpoint'" class="control-label">Endpoint</label>
+                <div>
                     <input name="endpoint" type="text" class="form-control" data-ng-model="endpoint" id="endpoint" placeholder="Endpoint" required>
                     <div ng-show="submitted && webservicesForm.endpoint.$invalid" class="help-block">
                         <p ng-show="webservicesForm.endpoint.$error.required">Endpoint is required</p>
@@ -25,13 +23,13 @@
                 </div>
             </div>
             <div class="form-group" >
-                <label mean-token="'create-webservice-description'" for="description" class="col-md-1 control-label">Description</label>
-                <div class="col-md-12">
+                <label mean-token="'create-webservice-description'" for="description" class="control-label">Description</label>
+                <div>
                     <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
+                <div>
                     <button type="submit" class="btn btn-info">Submit</button>
                 </div>
             </div>

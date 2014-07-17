@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mean.web-services').controller('RequestsController', ['$scope', '$stateParams', '$location', 'Global', 'Requests',
+angular.module('mean.web-services').controller('RequestsController', ['$scope', '$http', '$stateParams', '$location', 'Global', 'Requests',
 
-    function($scope, $stateParams, $location, Global, Requests) {
+    function($scope, $http, $stateParams, $location, Global, Requests) {
         $scope.global = Global;
         $scope.package = {
             name: 'requests'
@@ -25,7 +25,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 });
 
                 request.$save(function(response) {
-                    $location.path('requests/' + response._id);
+                    $location.path('web-services/' + response.web_service + '/requests/' + response._id);
                 });
             } else {
                 $scope.submitted = true;
@@ -35,11 +35,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.remove = function(request) {
             if (request) {
                 request.$remove(function(response) {
-                    $location.path('requests');
+                    $location.path('web-services/' + response.web_service);
                 });
             } else {
                 $scope.request.$remove(function(response) {
-                    $location.path('requests');
+                    $location.path('web-services/' + response.web_service);
                 });
             }
         };
@@ -52,12 +52,25 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 }
                 request.updated.push(new Date().getTime());
 
-                request.$update(function() {
-                    $location.path('requests/' + request._id);
+                request.$update(function(response) {
+                    $location.path('web-services/' + response.web_service + '/requests/' + response._id);
                 });
             } else {
                 $scope.submitted = true;
             }
+        };
+
+        $scope.testRequest = function(request) {
+            var responsePromise = null;
+
+            responsePromise = $http.get($scope.$parent.webservice.endpoint + '/?' + request.payload);
+
+            responsePromise.success(function(data, status, headers, config) {
+                console.log(data);
+            });
+            responsePromise.error(function(data, status, headers, config) {
+                alert('AJAX failed!');
+            });
         };
 
         $scope.find = function() {

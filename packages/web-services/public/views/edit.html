@@ -1,33 +1,38 @@
 <section data-ng-controller="WebServicesController" data-ng-init="findOne()">
-    <form name="webserviceForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(webserviceForm.$valid)" novalidate>
-        <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.name.$invalid }">
-            <label mean-token="'edit-webservice-name'" for="name" class="col-md-3 control-label">Title</label>
-            <div class="col-md-9">
-                <input name="name" type="text" class="form-control" data-ng-model="webservice.name" id="name" placeholder="Title" required>
-                <div ng-show="submitted && webserviceForm.name.$invalid" class="help-block">
-                    <p ng-show="webserviceForm.name.$error.required">Title is required</p>
+    <h2>
+            Edit {{webservice.name}}
+    </h2>
+    <div class="col-md-12">
+        <form name="webserviceForm" class="form-horizontal" role="form" data-ng-submit="update(webserviceForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.name.$invalid }">
+                <label mean-token="'edit-webservice-name'" for="name" class="control-label">Title</label>
+                <div>
+                    <input name="name" type="text" class="form-control" data-ng-model="webservice.name" id="name" placeholder="Title" required>
+                    <div ng-show="submitted && webserviceForm.name.$invalid" class="help-block">
+                        <p ng-show="webserviceForm.name.$error.required">Title is required</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.endpoint.$invalid }">
-            <label mean-token="'edit-webservice-endpoint'" for="endpoint" class="col-md-3 control-label">Title</label>
-            <div class="col-md-9">
-                <input name="endpoint" type="text" class="form-control" data-ng-model="webservice.endpoint" id="name" placeholder="Endpoint" required>
-                <div ng-show="submitted && webserviceForm.endpoint.$invalid" class="help-block">
-                    <p ng-show="webserviceForm.endpoint.$error.required">Endpoint is required</p>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.endpoint.$invalid }">
+                <label mean-token="'edit-webservice-endpoint'" for="endpoint" class="control-label">Title</label>
+                <div>
+                    <input name="endpoint" type="text" class="form-control" data-ng-model="webservice.endpoint" id="name" placeholder="Endpoint" required>
+                    <div ng-show="submitted && webserviceForm.endpoint.$invalid" class="help-block">
+                        <p ng-show="webserviceForm.endpoint.$error.required">Endpoint is required</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group" >
-            <label mean-token="'edit-webservice-description'" for="description" class="col-md-3 control-label">Description</label>
-            <div class="col-md-9">
-                <textarea name="description" data-ng-model="webservice.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+            <div class="form-group" >
+                <label mean-token="'edit-webservice-description'" for="description" class="control-label">Description</label>
+                <div>
+                    <textarea name="description" data-ng-model="webservice.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-3 col-md-9">
-                <button type="submit" class="btn btn-info">Submit</button>
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </section>

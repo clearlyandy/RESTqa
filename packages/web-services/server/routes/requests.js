@@ -11,7 +11,6 @@ var hasAuthorization = function(req, res, next) {
 };
 
 module.exports = function(Requests, app, auth) {
-
     app.route('/requests')
         .get(requests.all)
         .post(auth.requiresLogin, requests.create);

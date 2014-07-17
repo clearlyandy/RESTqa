@@ -24,7 +24,10 @@ angular.module('mean.web-services').config(['$stateProvider',
         $stateProvider
             .state('web services', {
                 url: '/web-services',
-                templateUrl: 'web-services/views/list.html'
+                templateUrl: 'web-services/views/list.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
             })
             .state('create web service', {
                 url: '/web-services/create',
@@ -53,6 +56,21 @@ angular.module('mean.web-services').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedin
                 }
+            })
+            .state('request by id', {
+                url: '/web-services/:webserviceId/requests/:requestId',
+                templateUrl: 'web-services/views/requests/view.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
+            .state('edit request', {
+                url: '/web-services/:webserviceId/requests/:requestId/edit',
+                templateUrl: 'web-services/views/requests/edit.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
             });
+
     }
 ]);

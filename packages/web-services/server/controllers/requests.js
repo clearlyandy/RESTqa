@@ -83,10 +83,29 @@ exports.show = function(req, res) {
 };
 
 /**
- * List of Web Services
+ * List of requests with a given web service ID.
  */
 exports.all = function(req, res) {
-    Request.find().sort('-created').populate('user', 'name username').exec(function(err, requests) {
+    if (req.query.webserviceId === null) {
+        return res.json(500, {
+            error: 'Web service ID missing - cannot list the requests'
+        });
+    }
+
+    Request.find({ 'web_service': req.query.webserviceId }).sort('-created').populate('user', 'name username').exec(function(err, requests) {
+        if (err) {
+            return res.json(500, {
+                error: 'Cannot list the requests'
+            });
+        }
+        res.json(requests);
+
+    });
+};
+
+
+exports.findOne = function(req, res) {
+    Request.find().sort('+created').populate('user', 'name username').exec(function(err, requests) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'

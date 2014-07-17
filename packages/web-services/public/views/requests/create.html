@@ -1,46 +1,51 @@
-<section data-ng-controller="RequestsController">
-    <form name="requestsForm" class="form-horizontal col-md-6" role="form" data-ng-submit="create(requestsForm.$valid)" novalidate>
-        <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.name.$invalid }">
-            <label mean-token="'create-request-name'" class="col-md-3 control-label">Name</label>
-            <div class="col-md-9">
-                <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="Name" required>
-                <div ng-show="submitted && requestsForm.name.$invalid" class="help-block">
-                    <p ng-show="requestsForm.name.$error.required">Name is required</p>
+<section data-ng-controller="WebServicesController" data-ng-init="findOne()">
+    <section data-ng-controller="RequestsController">
+        <h2>
+            Create Request
+        </h2>
+        <form name="requestsForm" class="form-horizontal col-md-12" role="form" data-ng-submit="create(requestsForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.name.$invalid }">
+                <label mean-token="'create-request-name'" class="control-label">Name</label>
+                <div>
+                    <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="Name" required>
+                    <div ng-show="submitted && requestsForm.name.$invalid" class="help-block">
+                        <p ng-show="requestsForm.name.$error.required">Name is required</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.request_type.$invalid }">
-            <label mean-token="'create-request-request_type'" class="col-md-3 control-label">Request Type</label>
-            <div class="col-md-9">
-                <select name="request_type" class="form-control" data-ng-model="request_type" id="request_type" placeholder="-Select-" required>
-                  <option value="" disabled selected>Select your option</option>
-                  <option>GET</option>
-                  <option>POST</option>
-                  <option>PUT</option>
-                  <option>PATCH</option>
-                  <option>DELETE</option>
-                </select>
-                <div ng-show="submitted && requestsForm.request_type.$invalid" class="help-block">
-                    <p ng-show="requestsForm.request_type.$error.required">A request type is required</p>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.request_type.$invalid }">
+                <label mean-token="'create-request-request_type'" class="control-label">Request Type</label>
+                <div>
+                    <select name="request_type" class="form-control" data-ng-model="request_type" id="request_type" placeholder="-Select-" required>
+                      <option value="" disabled selected>Select your option</option>
+                      <option>GET</option>
+                      <option>POST</option>
+                      <option>PUT</option>
+                      <option>PATCH</option>
+                      <option>DELETE</option>
+                    </select>
+                    <div ng-show="submitted && requestsForm.request_type.$invalid" class="help-block">
+                        <p ng-show="requestsForm.request_type.$error.required">A request type is required</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group" >
-            <label mean-token="'create-request-payload'" for="payload" class="col-md-3 control-label">Payload</label>
-            <div class="col-md-9">
-                <textarea name="payload" data-ng-model="payload" id="payload" cols="30" rows="10" placeholder="Payload" class="form-control"></textarea>
+            <div class="form-group" >
+                <label mean-token="'create-request-payload'" for="payload" class="control-label">Payload</label>
+                <div>
+                    <textarea name="payload" data-ng-model="payload" id="payload" cols="30" rows="10" placeholder="Payload" class="form-control"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="form-group" >
-            <label mean-token="'create-request-description'" for="description" class="col-md-3 control-label">Description</label>
-            <div class="col-md-9">
-                <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+            <div class="form-group" style="display:none">
+                <label mean-token="'create-request-description'" for="description" class="control-label">Description</label>
+                <div>
+                    <textarea name="description" data-ng-model="description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-3 col-md-9">
-                <button type="submit" class="btn btn-info">Submit</button>
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
             </div>
-        </div>
-    </form>
-</section>
+        </form>
+    </section>
+</div>
