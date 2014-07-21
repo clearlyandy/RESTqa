@@ -56,19 +56,19 @@
                 <div class="pull-right">
                     <a class="btn btn-primary btn-xs" style="margin-right: 50px" data-nodrag="" ng-click="newSubItem(null)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
                 </div>
-                <div ui-tree ng-show="webservice.parameters.length > 0">
+                <div ui-tree ng-show="parameters.length > 0">
                   <ol ui-tree-nodes="" ng-model="parameters" id="tree-root" class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes">
-                    <li ng-repeat="item in webservice.parameters" ui-tree-node class="ng-scope angular-ui-tree-node" ng-include="'nodes_renderer.html'"></li>
+                    <li ng-repeat="item in parameters" ui-tree-node class="ng-scope angular-ui-tree-node" ng-include="'nodes_renderer.html'"></li>
                   </ol>
                 </div>
-                <div ng-show="submitted && (webserviceForm.parameter_name.$invalid || webserviceForm.parameter_label.$invalid || webserviceForm.parameter_data_type.$invalid || hasEmptyObjectParameter(webservice.parameters))" class="help-block">
+                <div ng-show="submitted && (webserviceForm.parameter_name.$invalid || webserviceForm.parameter_label.$invalid || webserviceForm.parameter_data_type.$invalid || hasEmptyObjectParameter(parameters))" class="help-block">
                     <p ng-show="webserviceForm.parameter_name.$error.required">
                         Parameter name is required</p>
                     <p ng-show="webserviceForm.parameter_label.$error.required">
                         Parameter label is required</p>
                     <p ng-show="webserviceForm.parameter_data_type.$error.required">
                         Parameter data type is required</p>
-                    <p ng-show="hasEmptyObjectParameter(webservice.parameters)">
+                    <p ng-show="hasEmptyObjectParameter(parameters)">
                         Object parameter has no children</p>
                 </div>
             </div>

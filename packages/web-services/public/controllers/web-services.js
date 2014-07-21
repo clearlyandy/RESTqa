@@ -14,7 +14,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.create = function(isValid) {
-            if (isValid && !hasEmptyObjectParameter(this.parameters)) {
+            if (isValid && !$scope.hasEmptyObjectParameter(this.parameters)) {
                 var webservice = new WebServices({
                     name: this.name,
                     description: this.description,
@@ -42,7 +42,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.update = function(isValid) {
-            if (isValid && !$scope.hasEmptyObjectParameter($scope.webservice.parameters)) {
+            if (isValid && !$scope.hasEmptyObjectParameter($scope.parameters)) {
                 var webservice = $scope.webservice;
                 if (!webservice.updated) {
                     webservice.updated = [];
@@ -68,7 +68,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 webserviceId: $stateParams.webserviceId
             }, function(webservice) {
                 $scope.webservice = webservice;
-                console.log(webservice);
+                $scope.parameters = webservice.parameters;
             });
         };
 
@@ -82,6 +82,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
 
         $scope.selectedItem = {};
         $scope.options = {};
+        $scope.parameters = [];
 
         $scope.removeSubItem = function(scope) {
             scope.remove();
@@ -92,14 +93,9 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.newSubItem = function(scope) {
-            if (typeof $scope.webservice === "undefined") {
-                $scope.webservice = {};
-                $scope.webservice.parameters = [];
-            }
-
             var nodeData;
             if (scope === null) {
-                $scope.webservice.parameters.push({
+                $scope.parameters.push({
                     title: null,
                     items: []
                 });
