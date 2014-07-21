@@ -22,12 +22,65 @@
                     </div>
                 </div>
             </div>
+
+            <script type="text/ng-template" id="nodes_renderer.html">
+              <div ui-tree-handle class="ng-scope ng-binding angular-ui-tree-handle" style="padding-bottom:32px">
+                <div class="pull-left">
+                    <a class="btn btn-success btn-xs" data-nodrag="" ng-click="toggle(this)"><span class="glyphicon glyphicon-chevron-right" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+
+                </div>
+                <div class="col-md-3" style="margin-top:-6px">
+                    <input name="parameter_label" data-ng-model="item.label" type="text" class="form-control"  placeholder="Parameter Label" required>
+                </div>
+                <div class="col-md-3" style="margin-top:-6px">
+                    <input name="parameter_name" type="text" class="form-control"  placeholder="Parameter Name" data-ng-model="item.name" required>
+                </div>
+                <div class="col-md-3" style="margin-top:-6px">
+                    <select name="parameter_data_type" class="form-control" data-ng-model="item.data_type" id="request_type" data-nodrag="" placeholder="-Select-" required>
+                      <option value="" disabled selected>-Data Type-</option>
+                      <option>Object</option>
+                      <option>String</option>
+                      <option>Number</option>
+                      <option>Boolean</option>
+                    </select>
+                </div>
+                <a class="pull-right btn btn-danger btn-xs" data-nodrag="" ng-click="removeSubItem(this)"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="pull-right btn btn-primary btn-xs" data-nodrag="" ng-click="newSubItem(this)" style="margin-right: 8px;" ng-show="item.data_type === 'Object'"><span class="glyphicon glyphicon-plus"></span></a>
+              </div>
+              <ol ui-tree-nodes="" ng-model="item.items" ng-class="{hidden: collapsed}">
+                <li ng-repeat="item in item.items" ui-tree-node ng-include="'nodes_renderer.html'">
+                </li>
+              </ol>
+            </script>
+            <div class="form-group" >
+                <label mean-token="'edit-webservice-parameters'" for="parameters" class="control-label">Parameters</label>
+                <div class="pull-right">
+                    <a class="btn btn-primary btn-xs" style="margin-right: 50px" data-nodrag="" ng-click="newSubItem(null)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
+                <div ui-tree ng-show="webservice.parameters.length > 0">
+                  <ol ui-tree-nodes="" ng-model="webservice.parameters" id="tree-root" class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes">
+                    <li ng-repeat="item in webservice.parameters" ui-tree-node class="ng-scope angular-ui-tree-node" ng-include="'nodes_renderer.html'"></li>
+                  </ol>
+                </div>
+                <div ng-show="submitted && (webserviceForm.parameter_name.$invalid || webserviceForm.parameter_label.$invalid || webserviceForm.parameter_data_type.$invalid || hasEmptyObjectParameter(webservice.parameters))" class="help-block">
+                    <p ng-show="webserviceForm.parameter_name.$error.required">
+                        Parameter name is required</p>
+                    <p ng-show="webserviceForm.parameter_label.$error.required">
+                        Parameter label is required</p>
+                    <p ng-show="webserviceForm.parameter_data_type.$error.required">
+                        Parameter data type is required</p>
+                    <p ng-show="hasEmptyObjectParameter(webservice.parameters)">
+                        Object parameter has no children</p>
+                </div>
+            </div>
+
             <div class="form-group" >
                 <label mean-token="'edit-webservice-description'" for="description" class="control-label">Description</label>
                 <div>
                     <textarea name="description" data-ng-model="webservice.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
                 </div>
             </div>
+
             <div class="form-group">
                 <div>
                     <button type="submit" class="btn btn-info">Submit</button>

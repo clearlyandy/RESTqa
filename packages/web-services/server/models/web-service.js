@@ -29,6 +29,10 @@ var WebServiceSchema = new Schema({
         required: true,
         trim: true
     },
+    parameters: {
+        type: Schema.Types.Mixed,
+        required: false
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'

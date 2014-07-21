@@ -14,11 +14,12 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.create = function(isValid) {
-            if (isValid) {
+            if (isValid && !hasEmptyObjectParameter(this.parameters)) {
                 var webservice = new WebServices({
                     name: this.name,
                     description: this.description,
-                    endpoint: this.endpoint
+                    endpoint: this.endpoint,
+                    parameters: this.parameters
                 });
                 webservice.$save(function(response) {
                     $location.path('web-services/' + response._id);
@@ -41,7 +42,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.update = function(isValid) {
-            if (isValid) {
+            if (isValid && !$scope.hasEmptyObjectParameter($scope.webservice.parameters)) {
                 var webservice = $scope.webservice;
                 if (!webservice.updated) {
                     webservice.updated = [];
@@ -67,6 +68,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 webserviceId: $stateParams.webserviceId
             }, function(webservice) {
                 $scope.webservice = webservice;
+                console.log(webservice);
             });
         };
 
@@ -76,6 +78,54 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
             }, function(requests) {
                 $scope.requests = requests;
             });
+        };
+
+        $scope.selectedItem = {};
+        $scope.options = {};
+
+        $scope.removeSubItem = function(scope) {
+            scope.remove();
+        };
+
+        $scope.toggle = function(scope) {
+            scope.toggle();
+        };
+
+        $scope.newSubItem = function(scope) {
+            if (typeof $scope.webservice === "undefined") {
+                $scope.webservice = {};
+                $scope.webservice.parameters = [];
+            }
+
+            var nodeData;
+            if (scope === null) {
+                $scope.webservice.parameters.push({
+                    title: null,
+                    items: []
+                });
+            } else {
+                nodeData = scope.$modelValue;
+                nodeData.items.push({
+                    id: nodeData.id * 10 + nodeData.items.length,
+                    title: nodeData.title + '.' + (nodeData.items.length + 1),
+                    items: []
+                });
+            }
+        };
+
+        $scope.hasEmptyObjectParameter = function(paramObj) {
+            for (var param in paramObj) {
+                var thisParam = paramObj[param];
+                if (thisParam.data_type === 'Object') {
+                    if (thisParam.items.length < 1) {
+                        return true;
+                    } else {
+                        $scope.hasEmptyObjectParameter(thisParam.items);
+                    }
+                }
+            }
+
+            return false;
         };
     }
 ]);
