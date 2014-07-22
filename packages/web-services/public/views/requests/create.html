@@ -29,6 +29,32 @@
                     </div>
                 </div>
             </div>
+            <script type="text/ng-template" id="parameter_input_renderer.html">
+                <div class="form-group">
+                    <label class="control-label">{{item.label}}</label>
+                    <div>
+                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="name" id="{{item.name}}" required>
+                        <div ng-show="submitted && requestsForm[item.name].$invalid" class="help-block">
+                            <p ng-show="requestsForm[item.name].$error.required">Name is required</p>
+                        </div>
+                    </div>
+                </div>
+            </script>
+            <script type="text/ng-template" id="parameter_renderer.html">
+              <div ng-hide="item.data_type === 'Object'">
+                <div ng-include="'parameter_input_renderer.html'">
+                </div>
+              </div>
+              <div ng-model="item.items" ng-class="{hidden: collapsed}">
+                <div ng-repeat="item in item.items" ng-include="'parameter_renderer.html'"><div ng-include="'parameter_input_renderer.html'"  class="form-group">
+                </div>
+                </div>
+              </div>
+            </script>
+            <div ng-show="parameters.length > 0">
+              <div ng-repeat="item in parameters" ng-include="'parameter_renderer.html'"></div>
+            </div>
+
             <div class="form-group" >
                 <label mean-token="'create-request-payload'" for="payload" class="control-label">Payload</label>
                 <div>
