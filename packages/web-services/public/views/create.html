@@ -22,6 +22,22 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.request_type.$invalid }">
+                <label mean-token="'create-request-request_type'" class="control-label">Request Type</label>
+                <div>
+                    <select name="request_type" class="form-control" data-ng-model="request_type" id="request_type" placeholder="-Select-" required>
+                      <option value="" disabled selected>Select your option</option>
+                      <option>GET</option>
+                      <option>POST</option>
+                      <option>PUT</option>
+                      <option>PATCH</option>
+                      <option>DELETE</option>
+                    </select>
+                    <div ng-show="submitted && requestsForm.request_type.$invalid" class="help-block">
+                        <p ng-show="requestsForm.request_type.$error.required">A request type is required</p>
+                    </div>
+                </div>
+            </div>
             <script type="text/ng-template" id="nodes_renderer.html">
               <div ui-tree-handle class="ng-scope ng-binding angular-ui-tree-handle" style="padding-bottom:32px">
                 <div class="pull-left">
