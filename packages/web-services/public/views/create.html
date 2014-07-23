@@ -68,10 +68,8 @@
               </ol>
             </script>
             <div class="form-group" >
-                <label mean-token="'edit-webservice-parameters'" for="parameters" class="control-label">Parameters</label>
-                <div class="pull-right">
-                    <a class="btn btn-primary btn-xs" style="margin-right: 50px" data-nodrag="" ng-click="newSubItem(null)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
-                </div>
+                <label mean-token="'edit-webservice-parameters'" for="parameters" class="control-label" style="display:inline">Parameters</label>&nbsp;&nbsp;
+                <a class="btn btn-primary btn-xs" style="margin-right: 50px" data-nodrag="" ng-click="newSubItem(null)" style="margin-right: 8px;">Add Parameter&nbsp;&nbsp;<span class="glyphicon glyphicon-plus"></span></a>
                 <div ui-tree ng-show="parameters.length > 0">
                   <ol ui-tree-nodes="" ng-model="parameters" id="tree-root" class="ng-scope ng-pristine ng-valid angular-ui-tree-nodes">
                     <li ng-repeat="item in parameters" ui-tree-node class="ng-scope angular-ui-tree-node" ng-include="'nodes_renderer.html'"></li>
