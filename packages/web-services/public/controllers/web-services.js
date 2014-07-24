@@ -18,6 +18,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 var webservice = new WebServices({
                     name: this.name,
                     description: this.description,
+                    request_type: this.request_type,
                     endpoint: this.endpoint,
                     parameters: this.parameters
                 });

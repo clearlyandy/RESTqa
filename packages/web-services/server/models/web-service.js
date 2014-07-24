@@ -24,6 +24,11 @@ var WebServiceSchema = new Schema({
         type: String,
         trim: true
     },
+    request_type: {
+        type: String,
+        required: true,
+        trim: true
+    },
     endpoint: {
         type: String,
         required: true,
@@ -49,6 +54,11 @@ WebServiceSchema.path('name').validate(function(name) {
 WebServiceSchema.path('endpoint').validate(function(endpoint) {
     return !!endpoint;
 }, 'Endpoint cannot be blank');
+
+WebServiceSchema.path('request_type').validate(function(request_type) {
+    return !!request_type;
+}, 'Request type cannot be blank');
+
 
 /**
  * Statics
