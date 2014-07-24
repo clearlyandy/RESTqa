@@ -29,17 +29,17 @@ var RequestSchema = new Schema({
         required: true,
         trim: true
     },
-    payload: {
-        type: String,
-        required: true,
-        trim: true
+    parameters: {
+        type: Schema.Types.Mixed,
+        required: true
     },
     expected_output: {
         type: String,
         trim: true
     },
     web_service: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'WebService',
         required: true,
         trim: true
     },
@@ -56,9 +56,9 @@ RequestSchema.path('name').validate(function(name) {
     return !!name;
 }, 'Name cannot be blank');
 
-RequestSchema.path('payload').validate(function(payload) {
-    return !!payload;
-}, 'Payload cannot be blank');
+RequestSchema.path('parameters').validate(function(parameters) {
+    return !!parameters;
+}, 'Parameters cannot be blank');
 
 RequestSchema.path('request_type').validate(function(request_type) {
     return !!request_type;

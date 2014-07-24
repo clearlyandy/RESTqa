@@ -14,10 +14,14 @@ module.exports = function(Requests, app, auth) {
     app.route('/requests')
         .get(requests.all)
         .post(auth.requiresLogin, requests.create);
+    app.route('/requests/:requestId/test')
+        .post(auth.requiresLogin, hasAuthorization, requests.test);
     app.route('/requests/:requestId')
         .get(requests.show)
         .put(auth.requiresLogin, hasAuthorization, requests.update)
         .delete(auth.requiresLogin, hasAuthorization, requests.destroy);
+
+    //.post(auth.requiresLogin, hasAuthorization, requests.all);
 
     // Finish with setting up the requestId param
     app.param('requestId', requests.request);

@@ -7,6 +7,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.package = {
             name: 'requests'
         };
+        $scope.parameters = {};
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -14,15 +15,17 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.create = function(isValid) {
+            console.log(isValid);
             if (isValid) {
                 var request = new Requests({
                     name: this.name,
                     description: this.description,
                     request_type: this.request_type,
-                    payload: this.payload,
+                    parameters: $scope.parameters,
                     expected_output: this.expected_output,
                     web_service: $stateParams.webserviceId
                 });
+                console.log($scope.parameters);
 
                 request.$save(function(response) {
                     $location.path('web-services/' + response.web_service + '/requests/' + response._id);

@@ -14,7 +14,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.create = function(isValid) {
-            if (isValid && !$scope.hasEmptyObjectParameter(this.parameters)) {
+        if (isValid && !$scope.hasEmptyObjectParameter(this.parameters)) {
                 var webservice = new WebServices({
                     name: this.name,
                     description: this.description,
@@ -97,14 +97,14 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
             if (scope === null) {
                 $scope.parameters.push({
                     title: null,
-                    items: []
+                    parameters: []
                 });
             } else {
                 nodeData = scope.$modelValue;
-                nodeData.items.push({
-                    id: nodeData.id * 10 + nodeData.items.length,
-                    title: nodeData.title + '.' + (nodeData.items.length + 1),
-                    items: []
+                nodeData.parameters.push({
+                    id: nodeData.id * 10 + nodeData.parameters.length,
+                    title: nodeData.title + '.' + (nodeData.parameters.length + 1),
+                    parameters: []
                 });
             }
         };
@@ -113,10 +113,10 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
             for (var param in paramObj) {
                 var thisParam = paramObj[param];
                 if (thisParam.data_type === 'Object') {
-                    if (thisParam.items.length < 1) {
+                    if (thisParam.parameters.length < 1) {
                         return true;
                     } else {
-                        $scope.hasEmptyObjectParameter(thisParam.items);
+                        $scope.hasEmptyObjectParameter(thisParam.parameters);
                     }
                 }
             }

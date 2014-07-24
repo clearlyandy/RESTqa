@@ -92,7 +92,9 @@ exports.all = function(req, res) {
         });
     }
 
-    Request.find({ 'web_service': req.query.webserviceId }).sort('-created').populate('user', 'name username').exec(function(err, requests) {
+    Request.find({
+        'web_service': req.query.webserviceId
+    }).sort('-created').populate('user', 'name username').exec(function(err, requests) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'
@@ -111,6 +113,20 @@ exports.findOne = function(req, res) {
                 error: 'Cannot list the requests'
             });
         }
+        res.json(requests);
+
+    });
+};
+
+exports.test = function(req, res) {
+    Request.find().sort('+created').populate('user', 'name username').populate('web_service', 'name endpoint').exec(function(err, requests) {
+        if (err) {
+            return res.json(500, {
+                error: 'Cannot list the requests'
+            });
+        }
+
+
         res.json(requests);
 
     });
