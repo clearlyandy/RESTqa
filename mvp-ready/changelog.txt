@@ -1,0 +1,14 @@
+== Changelog ==
+
+= 1.1.0: May 21, 2014 =
+
+* New: Upgrade Bootstrap to 3.1.1 from 3.0.3
+* New: Upgrade Font Awesome to 4.1.0 from 4.0.3
+
+= 1.0.1: May 19, 2014 =
+
+* Fix: Responsive bug fix on iPad
+
+= 1.0.0: Feb 6, 2014 =
+
+* New: Initial Release

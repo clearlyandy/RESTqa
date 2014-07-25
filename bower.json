@@ -12,5 +12,8 @@
     "angular-bootstrap": "0.11.0",
     "angular-ui-router": "#master",
     "angular-ui-tree": "~2.1.4"
+  },
+  "devDependencies": {
+    "components-font-awesome": "~4.1.0"
   }
 }
