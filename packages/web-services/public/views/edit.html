@@ -1,7 +1,8 @@
 <section data-ng-controller="WebServicesController" data-ng-init="findOne()">
     <h3 class="portlet-title">
-            Edit {{webservice.name}}
+            <u>Edit {{webservice.name}}</u>
     </h3>
+    <br />
     <div class="col-md-12">
         <form name="webserviceForm" class="form-horizontal" role="form" data-ng-submit="update(webserviceForm.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.name.$invalid }">
@@ -14,7 +15,7 @@
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : submitted && webserviceForm.endpoint.$invalid }">
-                <label mean-token="'edit-webservice-endpoint'" for="endpoint" class="control-label">Title</label>
+                <label mean-token="'edit-webservice-endpoint'" for="endpoint" class="control-label">Endpoint</label>
                 <div>
                     <input name="endpoint" type="text" class="form-control" data-ng-model="webservice.endpoint" id="name" placeholder="Endpoint" required>
                     <div ng-show="submitted && webserviceForm.endpoint.$invalid" class="help-block">

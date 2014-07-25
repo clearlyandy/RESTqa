@@ -2,7 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" itemscope="itemscope" itemtype="http://schema.org/Product">
 {% include '../includes/head.html' %}
 
-<body>
+<body ng-class="{'account-bg': Global.authenticated}">
+
 <div class="wrapper">
 <div class="navbar navbar-inverse" role="banner" data-ng-include="'/system/views/header.html'" data-role="navigation"></div>
     {% if adminEnabled %}
@@ -10,11 +11,17 @@
         <div data-ng-include="'/mean-admin/views/index.html'"></div>
     </section>-->
     {% endif %}
-    <section class="content">
-        <section class="container">
-            {% block content %}{% endblock %}
+
+    {% if !isLoggedIn %}
+        {% block content %}{% endblock %}
+    {% else %}
+        <section class="content">
+            <section class="container">
+                {% block content %}{% endblock %}
+            </section>
         </section>
-    </section>
+    {% endif %}
+
     {% include '../includes/foot.html' %}
 </div>
 </body>

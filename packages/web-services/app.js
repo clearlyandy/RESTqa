@@ -18,8 +18,15 @@ WebServices.register(function(app, auth, database) {
 
     //We are adding a link to the main menu for all authenticated users
     WebServices.menus.add({
-        title: 'web services',
+        title: 'Web Services',
         link: 'web services',
+        roles: ['authenticated'],
+        menu: 'main'
+    });
+
+    WebServices.menus.add({
+        title: 'Tests',
+        link: 'tests',
         roles: ['authenticated'],
         menu: 'main'
     });

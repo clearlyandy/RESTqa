@@ -1,29 +1,52 @@
-<div data-ng-controller="LoginCtrl">
+<div class="account-wrapper" data-ng-controller="LoginCtrl">
     <div class="alert alert-danger animated fadeIn" ng-show="loginerror">{{loginerror}}</div>
-    <h1>Sign in</h1>
-    <form  ng-submit="login()" class="signin form-horizontal">
+
+    <div class="account-body">
+
+      <h3>Welcome back.</h3>
+
+      <h5>Please sign in to get access.</h5>
+
+      <form ng-submit="login()" class="form account-form" >
+
         <div class="form-group">
-            <label for="email" class="col-md-4 control-label">Email</label>
-            <div class="col-md-8">
-                <input required id="email" type="email" name="email" placeholder="Email" class="form-control" ng-model="user.email"/>
-            </div>
-        </div>
+          <label for="email" class="placeholder-hidden">Email</label>
+          <input required id="email" type="email" name="email" placeholder="Email" class="form-control" ng-model="user.email" tabindex="1">
+        </div> <!-- /.form-group -->
+
         <div class="form-group">
-            <label for="password" class="col-md-4 control-label">Password</label>
-            <div class="col-md-8">
-                <input required id="password" type="password" name="password" placeholder="Password" class="form-control" ng-model="user.password"/>
-            </div>
-        </div>
+          <label for="login-password" class="placeholder-hidden">Password</label>
+          <input required id="password" type="password" name="password" placeholder="Password" class="form-control" ng-model="user.password" tabindex="2">
+        </div> <!-- /.form-group -->
+
+        <div class="form-group clearfix">
+          <div class="pull-left">
+            <label class="checkbox-inline">
+            <input type="checkbox" class="" value="" tabindex="3"> <small>Remember me</small>
+            </label>
+          </div>
+
+          <div class="pull-right">
+            <small><a ui-sref='forgot-password'>Forgot Password?</a></small>
+          </div>
+        </div> <!-- /.form-group -->
+
         <div class="form-group">
-            <div class="col-md-offset-4 col-md-8">
-                <button type="submit" class="btn btn-primary">Sign in</button>&nbsp;
-                or&nbsp;<a ui-sref='auth.register' class="show-signup">Sign up</a>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-4 col-md-8">
-                <a ui-sref='forgot-password'>Forgot your password?</a>
-            </div>
-        </div>
-    </form>
-</div>
+          <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">
+            Signin &nbsp; <i class="fa fa-play-circle"></i>
+          </button>
+        </div> <!-- /.form-group -->
+
+      </form>
+
+
+    </div> <!-- /.account-body -->
+
+    <div class="account-footer">
+      <p>
+      Don't have an account? &nbsp;
+      <a ui-sref='auth.register' class="">Create an Account!</a>
+      </p>
+    </div> <!-- /.account-footer -->
+
+</div> <!-- /.account-wrapper -->
