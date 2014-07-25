@@ -1,21 +1,21 @@
 <section data-ng-controller="WebServicesController" data-ng-init="findOne()">
    <div class="col-md-12">
-        <div class="pull-left">
-            <h2 class="pull-left">{{webservice.name}}</h2>
+        <div class="pull-right">
+            <a class="btn btn-success" href="/#!/web-services/{{webservice._id}}/requests/create">Add Request</a>
         </div>
-        <div class="pull-left">
+        <div class="pull-right">
             <a class="btn" href="/#!/web-services/{{webservice._id}}/edit">
                 <i class="glyphicon glyphicon-edit"></i>
             </a>
         </div>
-        <div class="pull-left">
+        <div class="pull-right">
             <a class="btn" data-ng-click="remove(webservice);">
                 <i class="glyphicon glyphicon-trash"></i>
             </a>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-success" href="/#!/web-services/{{webservice._id}}/requests/create">Add Request</a>
-        </div>
+
+
+        <h3 class="portlet-title"><u>{{webservice.name}}</u></h3>
         <table class="table" data-ng-init="findRequests()">
             <thead>
                 <tr>

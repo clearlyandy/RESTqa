@@ -1,7 +1,7 @@
 <section data-ng-controller="RequestsController" data-ng-init="findOne()">
-    <h2>
+    <h3 class="portlet-title">
         Edit {{request.name}}
-    </h2>
+    </h3>
     <form name="requestsForm" class="form-horizontal col-md-12" role="form" data-ng-submit="update(requestsForm.$valid)" novalidate>
         <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.name.$invalid }">
             <label mean-token="'create-request-name'" class="control-label">Name</label>

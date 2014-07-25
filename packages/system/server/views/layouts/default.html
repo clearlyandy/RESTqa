@@ -3,11 +3,12 @@
 {% include '../includes/head.html' %}
 
 <body>
-    <div class="navbar navbar-default navbar-fixed-top" data-ng-include="'/system/views/header.html'" data-role="navigation"></div>
+<div class="wrapper">
+<div class="navbar navbar-inverse" role="banner" data-ng-include="'/system/views/header.html'" data-role="navigation"></div>
     {% if adminEnabled %}
     <section class="admin-menu">
         <div data-ng-include="'/mean-admin/views/index.html'"></div>
-    </section>
+    </section>-->
     {% endif %}
     <section class="content">
         <section class="container">
@@ -15,6 +16,7 @@
         </section>
     </section>
     {% include '../includes/foot.html' %}
+</div>
 </body>
 
 </html>

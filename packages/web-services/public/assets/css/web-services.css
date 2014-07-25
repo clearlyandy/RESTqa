@@ -1,7 +1,14 @@
+body {
+
+}
+
 h2 {
     margin-top:0;
 }
 
+.logo {
+    margin-top: 4px;
+}
 
 .btn {
     margin-right: 8px;
@@ -31,5 +38,8 @@ h2 {
 
 .group-title {
     background-color: #687074 !important;
-    color: #FFF !important;
+}
+
+.portlet-title {
+    pointer-events:none
 }

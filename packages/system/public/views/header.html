@@ -1,38 +1,126 @@
-<div class="page-header" data-ng-controller="HeaderController">
-  <div class="logo pull-left">
-    <a class="navbar-brand" ui-sref="home" mean-token="'site-title'">Constable</a>
-  </div>
+<div class="container"  data-ng-controller="HeaderController">
 
-  <div class="left pull-left">
-    <ul class="navbar-nav nav">
-      <li data-ng-repeat="item in menus.main" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
-          <a mean-token="item.link" ui-sref='{{item.link}}'>{{item.title}}</a>
-      </li>
-    </ul>
-  </div>
+      <div class="navbar-header page-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <i class="fa fa-cog"></i>
+        </button>
 
-  <div class="account">
-    <div class="text-edit">
-      <div class="pull-right" data-ng-show="global.authenticated" mean-token-editable></div>
-      <div class="pull-right" data-ng-show="global.authenticated" mean-translate></div>
-    </div>
-    <ul class="navbar-nav nav" data-ng-hide="global.authenticated">
-        <li><a ui-sref='auth.register'>Register</a>
-        </li>
-        <li class="divider-vertical"></li>
-        <li><a ui-sref='auth.login'>Login</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav nav" data-ng-show="global.authenticated">
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                {{global.user.name}} <b class="caret"></b>
+        <div class="logo pull-left">
+          <a class="navbar-brand" ui-sref="home" mean-token="'site-title'">Constable</a>
+        </div>
+      </div> <!-- /.navbar-header -->
+
+
+      <nav class="collapse navbar-collapse" role="navigation">
+
+        <ul class="nav navbar-nav noticebar navbar-left">
+
+          <div class="left pull-left">
+            <ul class="navbar-nav nav">
+              <li data-ng-repeat="item in menus.main" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
+                  <a mean-token="item.link" ui-sref='{{item.link}}'>{{item.title}}</a>
+              </li>
+            </ul>
+          </div>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown" data-ng-show="global.authenticated">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-exclamation-triangle"></i>
+              <span class="navbar-visible-collapsed">&nbsp;Alerts&nbsp;</span>
             </a>
-            <ul class="dropdown-menu">
-                <li><a href="/logout">Sign out</a>
+
+            <ul class="dropdown-menu noticebar-menu noticebar-hoverable" role="menu">
+              <li class="nav-header">
+                <div class="pull-left">
+                  Alerts
+                </div>
+              </li>
+
+              <li>
+                <a href="./page-notifications.html" class="noticebar-item">
+                  <span class="noticebar-item-image">
+                    <i class="fa fa-cloud-upload text-success"></i>
+                  </span>
+                  <span class="noticebar-item-body">
+                    <strong class="noticebar-item-title">Templates Synced</strong>
+                    <span class="noticebar-item-text">20 Templates have been synced to the Mashon Demo instance.</span>
+                    <span class="noticebar-item-time"><i class="fa fa-clock-o"></i> 12 minutes ago</span>
+                  </span>
+                </a>
+              </li>
+
+              <li>
+                <a href="./page-notifications.html" class="noticebar-item">
+                  <span class="noticebar-item-image">
+                    <i class="fa fa-ban text-danger"></i>
+                  </span>
+                  <span class="noticebar-item-body">
+                    <strong class="noticebar-item-title">Sync Error</strong>
+                    <span class="noticebar-item-text">5 Designs have been failed to be synced to the Mashon Demo instance.</span>
+                    <span class="noticebar-item-time"><i class="fa fa-clock-o"></i> 20 minutes ago</span>
+                  </span>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li>
+             <div class="text-edit">
+              <div class="pull-right" data-ng-show="global.authenticated" mean-token-editable></div>
+              <div class="pull-right" data-ng-show="global.authenticated" mean-translate></div>
+            </div>
+          </li>
+          <li data-ng-hide="global.authenticated">
+            <ul class="navbar-nav nav" >
+                <li><a ui-sref='auth.register'>Register</a>
+                </li>
+                <li class="divider-vertical"></li>
+                <li><a ui-sref='auth.login'>Login</a>
                 </li>
             </ul>
-        </li>
-    </ul>
-  </div>
-</div>
+          </li>
+
+          <li class="dropdown navbar-profile" data-ng-show="global.authenticated">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+              {{global.user.name}}
+              <span class="navbar-profile-label">rod@rod.me &nbsp;</span>
+              <i class="fa fa-caret-down"></i>
+            </a>
+
+            <ul class="dropdown-menu" role="menu">
+
+              <li>
+                <a href="./page-profile.html">
+                  <i class="fa fa-user"></i>
+                  &nbsp;&nbsp;My Profile
+                </a>
+              </li>
+
+              <!--<li>
+                <a href="./page-pricing.html">
+                  <i class="fa fa-dollar"></i>
+                  &nbsp;&nbsp;Plans & Billing
+                </a>
+              </li>-->
+
+              <li class="divider"></li>
+
+              <li>
+                <a href="/logout">
+                  <i class="fa fa-sign-out"></i>
+                  &nbsp;&nbsp;Logout
+                </a>
+              </li>
+
+            </ul>
+
+          </li>
+
+        </ul>
+
+      </nav>
+
+</div> <!-- /.container -->

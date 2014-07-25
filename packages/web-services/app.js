@@ -45,6 +45,9 @@ WebServices.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
+
+    WebServices.aggregateAsset('css', 'mvpready-admin.css');
+    WebServices.aggregateAsset('css', 'mvpready-flat.css');
     WebServices.aggregateAsset('css', 'web-services.css');
 
     return WebServices;

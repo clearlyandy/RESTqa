@@ -1,26 +1,26 @@
 <section data-ng-controller="WebServicesController" data-ng-init="find()">
 	<div class="col-md-12">
-		<div class="pull-left">
-			<h2 class="pull-left">Web Services</h2>
-		</div>
 		<div class="pull-right">
 			<a class="btn btn-success" href="#!/web-services/create">Add Web Service</a>
 		</div>
-		<table class="table">
-			<thead>
+		<h3 class="portlet-title"><u>Web Services</u></h3>
+		<table class="table keyvalue-table">
+			<!--<thead>
 				<tr>
+					<th></th>
 					<th>Name</th>
 					<th>Endpoint</th>
 				</tr>
-			</thead>
+			</thead>-->
 			<tbody>
 				<tr data-ng-repeat="webservice in webservices">
-					<th>
-						<p><a data-ng-href="#!/web-services/{{webservice._id}}">{{webservice.name}}</a></p>
-					</th>
-					<th>
-						<p>{{webservice.endpoint}}</p>
-					</th>
+					<td><span class="label" ng-class="{'label-info': webservice.request_type === 'GET', 'label-success': webservice.request_type === 'POST', 'label-danger': webservice.request_type === 'DELETE', 'label-warning': webservice.request_type === 'PUT', 'label-default': webservice.request_type === 'PATCH'}">{{webservice.request_type}}</span> </td>
+					<td class="kv-key">
+						<a data-ng-href="#!/web-services/{{webservice._id}}">{{webservice.name}}</a>
+					</td>
+					<td >
+						{{webservice.endpoint}}
+					</td>
 				<tr>
 			</tbody>
 		</table>
