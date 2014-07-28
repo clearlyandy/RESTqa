@@ -38,7 +38,7 @@ h2 {
 
 .portlet-title {
     pointer-events:none;
-    margin-bottom: 0;
+    margin-bottom: 1px;
 }
 
 .form-horizontal .control-label {

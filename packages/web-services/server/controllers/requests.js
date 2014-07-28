@@ -25,7 +25,6 @@ exports.request = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var request = new Request(req.body);
-    console.log(request);
     request.user = req.user;
 
     request.save(function(err) {
@@ -86,7 +85,7 @@ exports.show = function(req, res) {
  * List of requests with a given web service ID.
  */
 exports.all = function(req, res) {
-    if (req.query.webserviceId === null) {
+    if (typeof req.query.webserviceId === 'undefined') {
         return res.json(500, {
             error: 'Web service ID missing - cannot list the requests'
         });

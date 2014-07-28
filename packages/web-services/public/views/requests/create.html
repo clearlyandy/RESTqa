@@ -48,7 +48,6 @@
               <div ng-model="item.parameters" ng-class="{hidden: collapsed}">
                 <div ng-repeat="item in item.parameters" ng-include="'parameter_renderer.html'"><div ng-include="'parameter_input_renderer.html'"  class="form-group">
                 </div>
-                </div>
               </div>
             </script>
             <div ng-show="$parent.parameters.length > 0">

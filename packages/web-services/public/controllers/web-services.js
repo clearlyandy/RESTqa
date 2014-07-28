@@ -14,7 +14,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         };
 
         $scope.create = function(isValid) {
-        if (isValid && !$scope.hasEmptyObjectParameter(this.parameters)) {
+            if (isValid && !$scope.hasEmptyObjectParameter(this.parameters)) {
                 var webservice = new WebServices({
                     name: this.name,
                     description: this.description,
@@ -23,7 +23,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                     parameters: this.parameters
                 });
                 webservice.$save(function(response) {
-                    $location.path('web-services/' + response._id);
+                    $location.path('web-services');
                 });
             } else {
                 $scope.submitted = true;
@@ -33,6 +33,9 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         $scope.remove = function(webservice) {
             if (webservice) {
                 webservice.$remove(function(response) {
+                    if ($scope.webservices) {
+                        $scope.webservices.splice($scope.webservices.indexOf(webservice), 1);
+                    }
                     $location.path('web-services');
                 });
             } else {
@@ -51,7 +54,7 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 webservice.updated.push(new Date().getTime());
 
                 webservice.$update(function() {
-                    $location.path('web-services/' + webservice._id);
+                    $location.path('web-services');
                 });
             } else {
                 $scope.submitted = true;

@@ -50,6 +50,13 @@ angular.module('mean.web-services').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
+            .state('view web service request', {
+                url: '/web-services/:webserviceId/requests',
+                templateUrl: 'web-services/views/requests/list.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
             .state('create web service request', {
                 url: '/web-services/:webserviceId/requests/create',
                 templateUrl: 'web-services/views/requests/create.html',

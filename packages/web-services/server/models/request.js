@@ -24,11 +24,6 @@ var RequestSchema = new Schema({
         type: String,
         trim: true
     },
-    request_type: {
-        type: String,
-        required: true,
-        trim: true
-    },
     parameters: {
         type: Schema.Types.Mixed,
         required: true
@@ -59,10 +54,6 @@ RequestSchema.path('name').validate(function(name) {
 RequestSchema.path('parameters').validate(function(parameters) {
     return !!parameters;
 }, 'Parameters cannot be blank');
-
-RequestSchema.path('request_type').validate(function(request_type) {
-    return !!request_type;
-}, 'Request type cannot be blank');
 
 RequestSchema.path('web_service').validate(function(web_service) {
     return !!web_service;

@@ -77,7 +77,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.find = function() {
-            Requests.query(function(requests) {
+            Requests.get({
+                webserviceId: $stateParams.webserviceId
+            }, function(requests) {
+                console.log(requests);
                 $scope.requests = requests;
             });
         };
