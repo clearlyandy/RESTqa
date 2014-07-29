@@ -1,22 +1,10 @@
 <section data-ng-controller="WebServicesController" data-ng-init="findOne()">
-    <section data-ng-controller="RequestsController" data-ng-init="findOne()">
-       <div class="col-md-12">
-            <div class="pull-left">
-                <h3 class="portlet-title">{{request.name}}</h3>
-            </div>
-            <div class="pull-left">
-                <a class="btn" href="/#!/web-services/{{request.web_service}}/requests/{{request._id}}/edit">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-            </div>
-            <div class="pull-left">
-                <a class="btn" data-ng-click="remove(request);">
-                    <i class="glyphicon glyphicon-trash"></i>
-                </a>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-warning" ng-click="testRequest(request)">Test Request</a>
-            </div>
+    <section data-ng-controller="RequestsController" data-ng-init="findOne()" class="col-md-12">
+        <div class="pull-right">
+            <a class="btn btn-warning" ng-click="testRequest(request)">Test Request</a>
         </div>
+        <h3 class="portlet-title"><u>{{request.name}}</u></h3>
+
+
     </section>
 </section>
