@@ -16,7 +16,7 @@
 				<tr data-ng-repeat="webservice in webservices">
 					<td><span class="label" ng-class="{'label-info': webservice.request_type === 'GET', 'label-success': webservice.request_type === 'POST', 'label-danger': webservice.request_type === 'DELETE', 'label-warning': webservice.request_type === 'PUT', 'label-default': webservice.request_type === 'PATCH'}">{{webservice.request_type}}</span> </td>
 					<td class="kv-key">
-						<a data-ng-href="#!/web-services/{{webservice._id}}/edit">{{webservice.name}}</a>
+						<a data-ng-href="#!/web-services/{{webservice._id}}/requests">{{webservice.name}}</a>
 					</td>
 					<td >
 						{{webservice.endpoint}}

@@ -85,48 +85,53 @@ exports.show = function(req, res) {
  * List of requests with a given web service ID.
  */
 exports.all = function(req, res) {
-    if (typeof req.query.webserviceId === 'undefined') {
+    if (typeof req.query.webserviceId === 'undefined' && typeof req.query.requestId === 'undefined') {
         return res.json(500, {
-            error: 'Web service ID missing - cannot list the requests'
+            error: 'webserviceId or requestId required - cannot list the requests'
         });
     }
 
     Request.find({
-        'web_service': req.query.webserviceId
-    }).sort('-created').populate('user', 'name username').exec(function(err, requests) {
+        $or: [{
+            'web_service': req.query.webserviceId
+        }, {
+            '_id': req.query.requestId
+        }]
+    }).sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, requests) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'
             });
         }
-        res.json(requests);
 
+        if (typeof req.query.webserviceId !== 'undefined') {
+            res.json(requests);
+        } else if (typeof req.query.requestId !== 'undefined') {
+            res.json(requests[0]);
+        }
     });
 };
 
 
 exports.findOne = function(req, res) {
-    Request.find().sort('+created').populate('user', 'name username').exec(function(err, requests) {
+    Request.findById(req.params.requestId).sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, requests) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'
             });
         }
         res.json(requests);
-
     });
 };
 
 exports.test = function(req, res) {
-    Request.find().sort('+created').populate('user', 'name username').populate('web_service', 'name endpoint').exec(function(err, requests) {
+    Request.find().sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, requests) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'
             });
         }
 
-
         res.json(requests);
-
     });
 };

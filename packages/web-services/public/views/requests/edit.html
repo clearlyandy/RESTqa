@@ -1,33 +1,53 @@
 <section data-ng-controller="RequestsController" data-ng-init="findOne()">
-    <h3 class="portlet-title">
-        Edit {{request.name}}
-    </h3>
-    <form name="requestsForm" class="form-horizontal col-md-12" role="form" data-ng-submit="update(requestsForm.$valid)" novalidate>
-        <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.name.$invalid }">
-            <label mean-token="'create-request-name'" class="control-label">Name</label>
-            <div>
-                <input name="name" type="text" class="form-control" data-ng-model="request.name" id="name" placeholder="Name" required>
-                <div ng-show="submitted && requestsForm.name.$invalid" class="help-block">
-                    <p ng-show="requestsForm.name.$error.required">Name is required</p>
+    <div class="col-md-12">
+        <h3 class="portlet-title">
+            <u>Edit {{request.name}}</u>
+        </h3>
+        <form name="requestsForm" class="form-horizontal col-md-12" role="form" data-ng-submit="update(requestsForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' : submitted && requestsForm.name.$invalid }">
+                <label mean-token="'create-request-name'" class="control-label">Name</label>
+                <div>
+                    <input name="name" type="text" class="form-control" data-ng-model="request.name" id="name" placeholder="Name" required>
+                    <div ng-show="submitted && requestsForm.name.$invalid" class="help-block">
+                        <p ng-show="requestsForm.name.$error.required">Name is required</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group" >
-            <label mean-token="'create-request-payload'" for="payload" class="control-label">Payload</label>
-            <div>
-                <textarea name="payload" data-ng-model="request.payload" id="payload" cols="30" rows="10" placeholder="Payload" class="form-control"></textarea>
+            <script type="text/ng-template" id="parameter_input_renderer.html">
+                <div class="form-group">
+                    <label class="control-label">{{item.label}}</label>
+                    <div>
+                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="request.parameters[item.name]" id="{{item.name}}" required>
+                        <div ng-show="submitted && requestsForm[item.name].$invalid" class="help-block">
+                            <p ng-show="requestsForm[item.name].$error.required">Name is required</p>
+                        </div>
+                    </div>
+                </div>
+            </script>
+            <script type="text/ng-template" id="parameter_renderer.html">
+              <div ng-if="item.data_type !== 'Object'">
+                <div ng-include="'parameter_input_renderer.html'">
+                </div>
+              </div>
+              <div ng-model="item.parameters" ng-class="{hidden: collapsed}">
+                <div ng-repeat="item in item.parameters" ng-include="'parameter_renderer.html'"><div ng-include="'parameter_input_renderer.html'"  class="form-group">
+                </div>
+              </div>
+            </script>
+            <div ng-show="request.web_service.parameters.length > 0">
+              <div ng-repeat="item in request.web_service.parameters" ng-include="'parameter_renderer.html'"></div>
             </div>
-        </div>
-        <div class="form-group" style="display:none">
-            <label mean-token="'create-request-description'" for="description" class="control-label">Description</label>
-            <div>
-                <textarea name="description" data-ng-model="request.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+            <div class="form-group">
+                <label mean-token="'create-request-description'" for="description" class="control-label">Description</label>
+                <div>
+                    <textarea name="description" data-ng-model="request.description" id="description" cols="30" rows="10" placeholder="Description" class="form-control"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div>
-                <button type="submit" class="btn btn-info">Submit</button>
+            <div class="form-group">
+                <div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </section>

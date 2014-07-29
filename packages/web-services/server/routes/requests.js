@@ -12,16 +12,14 @@ var hasAuthorization = function(req, res, next) {
 
 module.exports = function(Requests, app, auth) {
     app.route('/requests')
-        .get(requests.all)
-        .post(auth.requiresLogin, requests.create);
+        .get(auth.requiresLogin, hasAuthorization, requests.all)
+        .post(auth.requiresLogin, hasAuthorization, requests.create);
     app.route('/requests/:requestId/test')
         .post(auth.requiresLogin, hasAuthorization, requests.test);
     app.route('/requests/:requestId')
-        .get(requests.show)
+        .get(auth.requiresLogin, hasAuthorization, requests.findOne)
         .put(auth.requiresLogin, hasAuthorization, requests.update)
         .delete(auth.requiresLogin, hasAuthorization, requests.destroy);
-
-    //.post(auth.requiresLogin, hasAuthorization, requests.all);
 
     // Finish with setting up the requestId param
     app.param('requestId', requests.request);

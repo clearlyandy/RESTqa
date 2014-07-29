@@ -1,25 +1,25 @@
 <section data-ng-controller="RequestsController" data-ng-init="find()">
 	<div class="col-md-12">
 		<div class="pull-right">
-			<a class="btn btn-success" href="#!/web-services/create">Add Request</a>
+			<a class="btn btn-warning" href="#!/web-services/{{webserviceId}}/requests/create">Freeform Test</a>
+			<a class="btn btn-success" href="#!/web-services/{{webserviceId}}/requests/create">Add Request</a>
 		</div>
 		<h3 class="portlet-title"><u>Requests</u></h3>
-		{{requests}}
 		<table class="table keyvalue-table">
 			<tbody>
 				<tr data-ng-repeat="request in requests">
-					<td><span class="label" ng-class="{'label-info': webservice.request_type === 'GET', 'label-success': webservice.request_type === 'POST', 'label-danger': webservice.request_type === 'DELETE', 'label-warning': webservice.request_type === 'PUT', 'label-default': webservice.request_type === 'PATCH'}">{{webservice.request_type}}</span> </td>
+					<td><span class="label" ng-class="{'label-info': request.web_service.request_type === 'GET', 'label-success': request.web_service.request_type === 'POST', 'label-danger': request.web_service.request_type === 'DELETE', 'label-warning': request.web_service.request_type === 'PUT', 'label-default': request.web_service.request_type === 'PATCH'}">{{request.web_service.request_type}}</span> </td>
 					<td class="kv-key">
-						<a data-ng-href="#!/web-services/{{webservice._id}}/edit">{{webservice.name}}</a>
+						<a data-ng-href="#!/web-services/{{webserviceId}}/requests/{{request._id}}/edit">{{request.name}}</a>
 					</td>
 					<td >
-						{{webservice.endpoint}}
+						{{request.description}}
 					</td>
 					<td class="kv-value">
-						<a class="btn" href="/#!/web-services/{{webservice._id}}/edit">
+						<a class="btn" href="#!/web-services/{{webserviceId}}/requests/{{request._id}}/edit">
 		                    <i class="glyphicon glyphicon-edit"></i>
 		                </a>
-		                <a class="btn" data-ng-click="remove(webservice);">
+		                <a class="btn" data-ng-click="remove(request);">
 		                    <i class="glyphicon glyphicon-trash"></i>
 		                </a>
       				</td>

@@ -7,6 +7,10 @@ angular.module('mean.web-services').factory('Requests', ['$resource',
         }, {
             update: {
                 method: 'PUT'
+            },
+            getAll: {
+                method: 'GET',
+                isArray: true
             }
         });
     }

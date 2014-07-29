@@ -15,7 +15,6 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.create = function(isValid) {
-            console.log(isValid);
             if (isValid) {
                 var request = new Requests({
                     name: this.name,
@@ -25,10 +24,9 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     expected_output: this.expected_output,
                     web_service: $stateParams.webserviceId
                 });
-                console.log($scope.parameters);
 
                 request.$save(function(response) {
-                    $location.path('web-services/' + response.web_service + '/requests/' + response._id);
+                    $location.path('web-services/' + response.web_service + '/requests');
                 });
             } else {
                 $scope.submitted = true;
@@ -38,11 +36,14 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.remove = function(request) {
             if (request) {
                 request.$remove(function(response) {
-                    $location.path('web-services/' + response.web_service);
+                    if ($scope.requests) {
+                        $scope.requests.splice($scope.requests.indexOf(request), 1);
+                    }
+                    $location.path('web-services/' + response.web_service + '/requests');
                 });
             } else {
                 $scope.request.$remove(function(response) {
-                    $location.path('web-services/' + response.web_service);
+                    $location.path('web-services/' + response.web_service + '/requests');
                 });
             }
         };
@@ -53,6 +54,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 if (!request.updated) {
                     request.updated = [];
                 }
+                request.web_service = request.web_service._id;
+
                 request.updated.push(new Date().getTime());
 
                 request.$update(function(response) {
@@ -77,12 +80,13 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.find = function() {
-            Requests.get({
+            Requests.getAll({
                 webserviceId: $stateParams.webserviceId
             }, function(requests) {
-                console.log(requests);
                 $scope.requests = requests;
             });
+
+            $scope.webserviceId = $stateParams.webserviceId;
         };
 
         $scope.findOne = function() {
