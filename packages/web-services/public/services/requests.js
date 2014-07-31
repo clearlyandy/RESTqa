@@ -2,7 +2,9 @@
 
 angular.module('mean.web-services').factory('Requests', ['$resource',
     function($resource) {
-        return $resource('requests/:requestId', {
+        var factory = {};
+
+        factory.manager = $resource('requests/:requestId', {
             requestId: '@_id'
         }, {
             update: {
@@ -13,5 +15,11 @@ angular.module('mean.web-services').factory('Requests', ['$resource',
                 isArray: true
             }
         });
+
+        factory.tester = $resource('requests/:requestId/test', {
+            requestId: '@_id'
+        }, {});
+
+        return factory;
     }
 ]);

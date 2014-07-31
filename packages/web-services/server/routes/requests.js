@@ -15,7 +15,7 @@ module.exports = function(Requests, app, auth) {
         .get(auth.requiresLogin, hasAuthorization, requests.all)
         .post(auth.requiresLogin, hasAuthorization, requests.create);
     app.route('/requests/:requestId/test')
-        .post(auth.requiresLogin, hasAuthorization, requests.test);
+        .get(auth.requiresLogin, hasAuthorization, requests.test);
     app.route('/requests/:requestId')
         .get(auth.requiresLogin, hasAuthorization, requests.findOne)
         .put(auth.requiresLogin, hasAuthorization, requests.update)

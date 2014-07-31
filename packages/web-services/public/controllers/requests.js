@@ -54,7 +54,9 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 if (!request.updated) {
                     request.updated = [];
                 }
+
                 request.web_service = request.web_service._id;
+                request.parameters = $scope.parameters;
 
                 request.updated.push(new Date().getTime());
 
@@ -67,8 +69,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.testRequest = function(request) {
-            var responsePromise = null;
-
+            Requests.tester.get({
+                requestId: request._id
+            }, function(response) {
+                console.log(response);
+            });
+            /*var responsePromise = null;
             responsePromise = $http.get($scope.$parent.webservice.endpoint + '/?' + request.payload);
 
             responsePromise.success(function(data, status, headers, config) {
@@ -76,11 +82,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             });
             responsePromise.error(function(data, status, headers, config) {
                 alert('AJAX failed!');
-            });
+            });*/
         };
 
         $scope.find = function() {
-            Requests.getAll({
+            Requests.manager.getAll({
                 webserviceId: $stateParams.webserviceId
             }, function(requests) {
                 $scope.requests = requests;
@@ -90,7 +96,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.findOne = function() {
-            Requests.get({
+            Requests.manager.get({
                 requestId: $stateParams.requestId
             }, function(request) {
                 $scope.request = request;

@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
     Request = mongoose.model('Request'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    http = require('http'),
+    url = require('url');
 
 
 /**
@@ -125,13 +127,39 @@ exports.findOne = function(req, res) {
 };
 
 exports.test = function(req, res) {
-    Request.find().sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, requests) {
+    Request.findById(req.params.requestId).sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, request) {
         if (err) {
             return res.json(500, {
                 error: 'Cannot list the requests'
             });
         }
 
-        res.json(requests);
+        var response = {};
+
+        var options = {
+            host: url.parse(request.web_service.endpoint).host,
+            port: 80,
+            path: url.parse(request.web_service.endpoint).path,
+            method: request.web_service.request_type
+        };
+
+        var testReq = http.request(options, function(testRes) {
+            response.code = JSON.stringify(testRes.statusCode);
+            response.headers = testRes.headers;
+            response.body = '';
+            testRes.setEncoding('utf8');
+            testRes.on('data', function(chunk) {
+                response.body += chunk;
+            });
+            testRes.on('end', function() {
+                res.json(response);
+            });
+        });
+
+        testReq.on('error', function(e) {
+            res.json(e);
+        });
+
+        testReq.end();
     });
 };
