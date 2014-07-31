@@ -139,9 +139,11 @@ exports.test = function(req, res) {
         var options = {
             host: url.parse(request.web_service.endpoint).host,
             port: 80,
-            path: url.parse(request.web_service.endpoint).path,
+            path: url.parse(request.web_service.endpoint).path  + '/?publish_id=72&data_revision=2&version=production-2015-fs',
             method: request.web_service.request_type
         };
+
+        console.log(options);
 
         var testReq = http.request(options, function(testRes) {
             response.code = JSON.stringify(testRes.statusCode);

@@ -7,6 +7,9 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
         $scope.package = {
             name: 'web-services'
         };
+        $scope.selectedItem = {};
+        $scope.options = {};
+        $scope.parameters = [];
 
         $scope.hasAuthorization = function(webservice) {
             if (!webservice || !webservice.user) return false;
@@ -83,10 +86,6 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
                 $scope.requests = requests;
             });
         };
-
-        $scope.selectedItem = {};
-        $scope.options = {};
-        $scope.parameters = [];
 
         $scope.removeSubItem = function(scope) {
             scope.remove();
