@@ -41,8 +41,12 @@ h2 {
 }
 
 .portlet-title {
-    pointer-events:none;
     margin-bottom: 1px;
+}
+
+.portlet-title .btn {
+    font-weight: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .form-horizontal .control-label {

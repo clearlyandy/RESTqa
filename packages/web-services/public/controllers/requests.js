@@ -90,9 +90,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 webserviceId: $stateParams.webserviceId
             }, function(requests) {
                 $scope.requests = requests;
+                if (requests.length > 0) {
+                    $scope.web_service = requests[0].web_service;
+                }
             });
 
-            $scope.webserviceId = $stateParams.webserviceId;
+
         };
 
         $scope.findOne = function() {
