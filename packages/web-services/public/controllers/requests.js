@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mean.web-services').controller('RequestsController', ['$scope', '$http', '$stateParams', '$location', 'Global', 'Requests',
+angular.module('mean.web-services').controller('RequestsController', ['$scope', '$http', '$stateParams', '$location', 'Global', 'Requests', 'WebServices',
 
-    function($scope, $http, $stateParams, $location, Global, Requests) {
+    function($scope, $http, $stateParams, $location, Global, Requests, WebServices) {
         $scope.global = Global;
         $scope.package = {
             name: 'requests'
@@ -16,15 +16,13 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
         $scope.create = function(isValid) {
             if (isValid) {
-                var request = new Requests({
+                var request = new Requests.manager({
                     name: this.name,
                     description: this.description,
-                    request_type: this.request_type,
                     parameters: $scope.parameters,
                     expected_output: this.expected_output,
                     web_service: $stateParams.webserviceId
                 });
-
                 request.$save(function(response) {
                     $location.path('web-services/' + response.web_service + '/requests');
                 });
@@ -72,7 +70,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             Requests.tester.get({
                 requestId: request._id
             }, function(response) {
-                console.log(response);
+                $scope.response = response;
             });
             /*var responsePromise = null;
             responsePromise = $http.get($scope.$parent.webservice.endpoint + '/?' + request.payload);
@@ -86,14 +84,17 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.find = function() {
-            Requests.manager.getAll({
+            WebServices.get({
                 webserviceId: $stateParams.webserviceId
-            }, function(requests) {
-                $scope.requests = requests;
-                if (requests.length > 0) {
-                    $scope.web_service = requests[0].web_service;
-                }
+            }, function(webservice) {
+                $scope.webservice = webservice;
+                Requests.manager.getAll({
+                    webserviceId: $stateParams.webserviceId
+                }, function(requests) {
+                    $scope.requests = requests;
+                });
             });
+
 
 
         };
@@ -103,6 +104,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 requestId: $stateParams.requestId
             }, function(request) {
                 $scope.request = request;
+                $scope.testRequest(request);
             });
         };
     }

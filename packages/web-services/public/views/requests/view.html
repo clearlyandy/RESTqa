@@ -1,25 +1,37 @@
-<section data-ng-controller="WebServicesController" data-ng-init="findOne()">
+<section >
     <section data-ng-controller="RequestsController" data-ng-init="findOne()" class="col-md-12">
     	<h3 class="portlet-title">
     		<u>
     			<a href="#!/web-services/{{request.web_service._id}}/requests">{{request.web_service.name}}</a> > {{request.name}}
     		</u>
 	        <div class="pull-right">
-	            <a class="btn btn-warning" ng-click="testRequest(request)">Test Request</a>
+	            <a class="btn btn-warning" ng-click="testRequest(request)">Re-run Test</a>
 	        </div>
 	   </h3>
         <table class="table keyvalue-table">
 			<tbody>
 				<tr>
-					<td>Header:  {{scope.response.header}}</td>
 					<td class="kv-key">
-
+						Response Code
 					</td>
-					<td >
-
+					<td class="kv-value1">
+						{{response.code}}
+      				</td>
+				<tr>
+				<tr>
+					<td class="kv-key">
+						Headers
 					</td>
-					<td class="kv-value">
-
+					<td class="kv-value1">
+						{{response.headers}}
+      				</td>
+				<tr>
+				<tr>
+					<td class="kv-key">
+						Body
+					</td>
+					<td class="kv-value1">
+						{{response.body}}
       				</td>
 				<tr>
 			</tbody>
