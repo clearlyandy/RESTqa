@@ -104,6 +104,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 requestId: $stateParams.requestId
             }, function(request) {
                 $scope.request = request;
+                $scope.parameters = request.parameters;
                 $scope.testRequest(request);
             });
         };

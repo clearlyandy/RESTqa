@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <label class="control-label">{{item.label}}</label>
                     <div>
-                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="request.parameters[item.name]" id="{{item.name}}" required>
+                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="parameters[item.name]" id="{{item.name}}" required>
                         <div ng-show="submitted && requestsForm[item.name].$invalid" class="help-block">
                             <p ng-show="requestsForm[item.name].$error.required">Name is required</p>
                         </div>
