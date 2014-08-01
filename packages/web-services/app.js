@@ -54,6 +54,7 @@ WebServices.register(function(app, auth, database) {
     */
 
     WebServices.aggregateAsset('css', 'mvpready-admin.css');
+    WebServices.aggregateAsset('css', 'mvpready-landing.css');
     WebServices.aggregateAsset('css', 'mvpready-flat.css');
     WebServices.aggregateAsset('css', 'web-services.css');
 

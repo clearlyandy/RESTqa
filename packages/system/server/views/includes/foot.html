@@ -1,3 +1,17 @@
+<footer data-ng-controller="FooterController" class="copyright" ng-show="showFooter">
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-sm-12">
+        <p>Copyright &copy; 2014 Constable.</p>
+      </div> <!-- /.col -->
+
+    </div> <!-- /.row -->
+
+  </div>
+</footer>
+
 {% for file in assets.core.js %}
     <script type="text/javascript" src="/{{file}}"></script>
 {% endfor %}
