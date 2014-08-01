@@ -1,7 +1,7 @@
 'use strict';
 angular.module('mean.users')
-    .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location',
-        function($scope, $rootScope, $http, $location) {
+    .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', '$route', '$window',
+        function($scope, $rootScope, $http, $location, $route, $window) {
             // This object will be filled by the form
             $scope.user = {};
 
@@ -24,7 +24,11 @@ angular.module('mean.users')
                             window.location = response.redirect;
                         }
                     } else {
-                        $location.url('/web-services');
+                        //$location.('/web-services');
+                        //alert(window.location.href);
+                        //window.location.href = 'http://localhost:3000/#!/web-services';
+                        $window.location.href = '#!/web-services';
+                        $window.location.reload();
                     }
                 })
                 .error(function() {
