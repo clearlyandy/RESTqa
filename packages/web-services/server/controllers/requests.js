@@ -136,10 +136,14 @@ exports.test = function(req, res) {
 
         var response = {};
 
+        var params = Object.keys(request.parameters).map(function(k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(request.parameters[k]);
+        }).join('&');
+        console.log(params);
         var options = {
             host: url.parse(request.web_service.endpoint).host,
             port: 80,
-            path: url.parse(request.web_service.endpoint).path  + '/?publish_id=72&data_revision=2&version=production-2015-fs',
+            path: url.parse(request.web_service.endpoint).path + '/?' + params,
             method: request.web_service.request_type
         };
 

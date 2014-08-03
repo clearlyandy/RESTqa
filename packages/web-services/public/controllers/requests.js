@@ -72,15 +72,6 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             }, function(response) {
                 $scope.response = response;
             });
-            /*var responsePromise = null;
-            responsePromise = $http.get($scope.$parent.webservice.endpoint + '/?' + request.payload);
-
-            responsePromise.success(function(data, status, headers, config) {
-                console.log(data);
-            });
-            responsePromise.error(function(data, status, headers, config) {
-                alert('AJAX failed!');
-            });*/
         };
 
         $scope.find = function() {
