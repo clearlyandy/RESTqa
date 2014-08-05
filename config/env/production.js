@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    db: 'mongodb://localhost/mean-prod',
+    db: 'mongodb://nodejitsu:0e9ec9a4568531b973aec47184098ae5@troup.mongohq.com:10051/nodejitsudb7044928579',
     app: {
         name: 'MEAN - A Modern Stack - Production'
     },
@@ -30,7 +30,7 @@ module.exports = {
         clientSecret: 'SECRET_KEY',
         callbackURL: 'http://localhost:3000/auth/linkedin/callback'
     },
-    emailFrom : 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+    emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
     mailer: {
         service: 'SERVICE_PROVIDER',
         auth: {
@@ -39,4 +39,3 @@ module.exports = {
         }
     }
 };
-
