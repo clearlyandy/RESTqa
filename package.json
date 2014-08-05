@@ -17,7 +17,7 @@
     "scripts": {
         "start": "node server.js",
         "test": "node node_modules/grunt-cli/bin/grunt test",
-        "postinstall": "node node_modules/bower/bin/bower install --config.interactive=false; ./node_modules/grunt-cli/bin/grunt build"
+        "postinstall": "node node_modules/bower/bin/bower install --config.interactive=false; node_modules/grunt-cli/bin/grunt build"
     },
     "dependencies": {
         "assetmanager": "^1.1.1",
