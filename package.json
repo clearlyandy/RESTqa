@@ -1,7 +1,7 @@
 {
     "name": "RESTqa",
     "description": "RESTqa",
-    "version": "0.4.0-6",
+    "version": "0.4.0-8",
     "private": false,
     "author": "Andrew Hass <andyhass@me.com>",
     "contributors": [],
@@ -17,7 +17,7 @@
     "scripts": {
         "start": "node server.js",
         "test": "node node_modules/grunt-cli/bin/grunt test",
-        "postinstall": "node node_modules/bower/bin/bower install --config.interactive=false"
+        "postinstall": "node node_modules/bower/bin/bower install --config.interactive=false; ./node_modules/grunt-cli/bin/grunt build"
     },
     "dependencies": {
         "assetmanager": "^1.1.1",

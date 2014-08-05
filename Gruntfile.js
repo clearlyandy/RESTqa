@@ -113,6 +113,8 @@ module.exports = function(grunt) {
     //Load NPM tasks
     require('load-grunt-tasks')(grunt);
 
+    grunt.registerTask('build', ['clean', 'cssmin', 'uglify']);
+
     //Default task(s).
     if (process.env.NODE_ENV === 'production') {
         grunt.registerTask('default', ['clean', 'cssmin', 'uglify', 'concurrent']);
