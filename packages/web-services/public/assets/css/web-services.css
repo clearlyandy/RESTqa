@@ -33,7 +33,9 @@
 .icon-github:before {
     content: "\e601";
 }
-
+.icon-logo:before {
+    content: "\e603";
+}
 
 .content {
     margin-top: 30px;
@@ -50,6 +52,11 @@ h2 {
 .navbar-brand {
   font-size:2.5em;
 }
+
+.navbar-inverse .navbar-brand:hover {
+    color: #E6E6E6;
+    background-color: transparent;
+ }
 
 .btn {
     margin-right: 8px;
