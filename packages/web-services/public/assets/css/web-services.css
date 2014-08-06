@@ -46,7 +46,7 @@ h2 {
 }
 
 .logo {
-    margin-top: 4px;
+    margin-top: -3px;
 }
 
 .navbar-brand {
@@ -99,4 +99,10 @@ h2 {
 
 .form-horizontal .control-label {
     margin-bottom: 5px;
+}
+
+.navbar-inverse .navbar-nav > .navbar-profile > a {
+    line-height: 60px;
+    height: 60px;
+}
 }

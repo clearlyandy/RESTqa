@@ -17,7 +17,7 @@ WebServices.register(function(app, auth, database) {
     WebServices.routes(app, auth, database);
 
     //We are adding a link to the main menu for all authenticated users
-    WebServices.menus.add({
+    /*WebServices.menus.add({
         title: 'Web Services',
         link: 'web services',
         roles: ['authenticated'],
@@ -29,7 +29,7 @@ WebServices.register(function(app, auth, database) {
         link: 'tests',
         roles: ['authenticated'],
         menu: 'main'
-    });
+    });*/
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above
