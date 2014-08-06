@@ -4,6 +4,6 @@ angular.module('mean.system').controller('FooterController', ['$scope', 'Global'
     $scope.global = Global;
 
     $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl){
-	   $scope.showFooter = $location.path() === '/';
+	   $scope.showFooter = true;
 	 });
 }]);

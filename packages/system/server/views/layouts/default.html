@@ -5,7 +5,7 @@
 <body ng-class="{'account-bg': Global.authenticated}">
 
 <div class="wrapper">
-<div class="navbar navbar-inverse" role="banner" data-ng-include="'/system/views/header.html'" data-role="navigation"></div>
+<div class="navbar navbar-inverse navbar-fixed-top" role="banner" data-ng-include="'/system/views/header.html'" data-role="navigation"></div>
     {% if adminEnabled %}
     <section class="admin-menu">
         <div data-ng-include="'/mean-admin/views/index.html'"></div>
