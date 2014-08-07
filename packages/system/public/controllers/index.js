@@ -4,10 +4,8 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
     $scope.global = Global;
 
     $scope.scrollTo = function(id) {
-    	console.log("HI");
     	$location.hash(id);
 		$anchorScroll();
-		console.log(document.documentElement.scrollTop)
 		window.scrollTo(document.documentElement.scrollTop - 50, 0);
 	};
 }]);
