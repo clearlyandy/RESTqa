@@ -71,6 +71,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 requestId: request._id
             }, function(response) {
                 $scope.response = response;
+                $scope.response = {
+        Name: "Joe", "Last Name": "Miller", Address: {Street: "Neverland 42"}, Hobbies: ["doing stuff", "dreaming"]
+    };
+
             });
         };
 

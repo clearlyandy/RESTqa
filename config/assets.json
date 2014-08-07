@@ -2,7 +2,8 @@
     "core": {
         "css": {
             "bower_components/build/css/dist.min.css": [
-                "bower_components/angular-carousel/dist/angular-carousel.css"
+                "bower_components/angular-carousel/dist/angular-carousel.css",
+                "web-services/assets/vendor/JSONedit/css/styles.css"
             ]
         },
         "js": {

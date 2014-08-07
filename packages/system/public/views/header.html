@@ -7,8 +7,8 @@
         </button>
 
         <div class="logo pull-left">
-          <a ng-if="!global.authenticated" class="navbar-brand" ui-sref="home" mean-token="'site-title'"><i class="icon-logo"></i>&nbsp;<b>REST</b>QA</a>
-          <a ng-if="global.authenticated" class="navbar-brand" ui-sref="web services" mean-token="'site-title'"><i class="icon-logo"></i>&nbsp;<b>REST</b>QA</a>
+          <a ng-if="!global.authenticated" class="navbar-brand" ui-sref="home" ng-click="collapse(true)" mean-token="'site-title'"><i class="icon-logo"></i>&nbsp;<b>REST</b>QA</a>
+          <a ng-if="global.authenticated" class="navbar-brand" ui-sref="web services" ng-click="collapse(true)" mean-token="'site-title'"><i class="icon-logo"></i>&nbsp;<b>REST</b>QA</a>
         </div>
       </div> <!-- /.navbar-header -->
 
