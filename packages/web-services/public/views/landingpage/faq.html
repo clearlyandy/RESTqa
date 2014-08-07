@@ -1,0 +1,49 @@
+<div class="content" data-ng-controller="FAQController">
+
+    	<div class="container">
+
+        <div class="layout layout-stack-sm layout-main-left">
+
+          <div class="col-sm-4 col-sm-push-8 layout-sidebar">
+
+            <div class="well text-center">
+              <p><i class="fa fa-question-circle fa-5x text-muted"></i></p>
+              <h4>Have a Question?</h4>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+              <a href="javascript:;" class="btn btn-secondary">Get it Answered!</a>
+            </div> <!-- /.well -->
+
+          </div> <!-- /.layout-sidebar -->
+
+          <div class="col-sm-8 col-sm-pull-4 layout-main">
+
+            <h3 class="content-title">
+            <span>General Questions</span>
+          </h3>
+
+          <div id="accordion-help" class="panel-group accordion-simple">
+              <div data-ng-repeat="item in faqlist">
+                <div class="panel" ng-class="{'is-open': !item.active}">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a class="accordion-toggle" href data-parent="#accordion-help" ng-click="accordionToggle(item)"><i class="fa accordion-caret"></i><i class="fa faq-accordion-caret"></i>{{item.title}} </a>
+                    </h4>
+                  </div><!-- .panel-heading -->
+
+                  <div id="faq-general-1" class="panel-collapse" ng-class="{collapse: !item.active}">
+                    <div class="panel-body">
+                    <p>{{item.text}}</p>
+                    </div><!-- .panel-body -->
+                  </div> <!-- ./panel-collapse -->
+                </div><!-- .panel -->
+              </div>
+
+            </div> <!-- /.accordion -->
+
+          </div> <!-- /.layout-main -->
+
+        </div> <!-- /.layout -->
+
+    	</div> <!-- /.container -->
+
+    </div> <!-- /.content -->

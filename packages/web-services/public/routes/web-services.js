@@ -77,6 +77,10 @@ angular.module('mean.web-services').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedin
                 }
+            })
+            .state('faq', {
+                url: '/faq',
+                templateUrl: 'web-services/views/landingpage/faq.html'
             });
 
     }
