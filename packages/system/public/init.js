@@ -17,7 +17,7 @@ for (var index in window.modules) {
 }
 
 // Default modules
-var modules = ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.router', 'ui.tree'];
+var modules = ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.router', 'ui.tree', 'angular-carousel'];
 modules = modules.concat(packageModules);
 
 // Combined modules

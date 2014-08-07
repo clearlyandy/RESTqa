@@ -86,13 +86,10 @@ angular.module('mean.web-services').config(['$stateProvider',
     }
 ]).run(['$rootScope','$location', 'Global', function($rootScope, $location, Global) {
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        var fullRoute = toState;
         if (!!Global.user._id) {
             if (toState.url === '/') {
                 $location.path('/web-services');
             }
         }
-
-        console.log(fullRoute);
     });
 }]);

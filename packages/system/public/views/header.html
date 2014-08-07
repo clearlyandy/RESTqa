@@ -1,9 +1,9 @@
 <div class="container"  data-ng-controller="HeaderController">
 
       <div class="navbar-header page-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <button class="navbar-toggle" type="button" ng-click="collapse()">
           <span class="sr-only">Toggle navigation</span>
-          <i class="fa fa-cog"></i>
+          <i class="fa fa-bars"></i>
         </button>
 
         <div class="logo pull-left">
@@ -13,9 +13,9 @@
       </div> <!-- /.navbar-header -->
 
 
-      <nav class="collapse navbar-collapse" role="navigation">
+      <nav class="collapse navbar-collapse" ng-class="{in: !collapsed}" role="navigation">
 
-        <ul class="nav navbar-nav noticebar navbar-left">
+        <!--<ul class="nav navbar-nav noticebar navbar-left">
 
           <div class="left pull-left">
             <ul class="navbar-nav nav">
@@ -24,7 +24,7 @@
               </li>
             </ul>
           </div>
-        </ul>
+        </ul>-->
 
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown" data-ng-show="global.authenticated">
@@ -68,7 +68,7 @@
 
             </ul>
           </li>
-          <li>
+          <li data-ng-show="global.authenticated">
              <div class="text-edit">
               <div class="pull-right" data-ng-show="global.authenticated" mean-token-editable></div>
               <div class="pull-right" data-ng-show="global.authenticated" mean-translate></div>
@@ -76,10 +76,10 @@
           </li>
           <li data-ng-hide="global.authenticated">
             <ul class="navbar-nav nav" >
-                <li><a ui-sref='auth.register'>Register</a>
+                <li><a ui-sref='auth.register' ng-click="collapse()">Register</a>
                 </li>
                 <li class="divider-vertical"></li>
-                <li><a ui-sref='auth.login'>Login</a>
+                <li><a ui-sref='auth.login' ng-click="collapse()">Login</a>
                 </li>
             </ul>
           </li>
@@ -87,7 +87,7 @@
           <li class="dropdown navbar-profile" data-ng-show="global.authenticated">
             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
               {{global.user.name}}
-              <span class="navbar-profile-label">rod@rod.me &nbsp;</span>
+              <span class="navbar-profile-label">{{global.user.email}} &nbsp;</span>
               <i class="fa fa-caret-down"></i>
             </a>
 
