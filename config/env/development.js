@@ -32,8 +32,10 @@ module.exports = {
     },
     emailFrom : 'support@rest.qa', // sender address like ABC <abc@example.com>
     mailer: {
-        service: 'smtp.zoho.com',
-        port: '465',
+        host: 'smtp.zoho.com',
+        secureConnection: true,
+        port: 465, // port for secure SMTP
+        requiresAuth: true,
         auth: {
             user: 'support@rest.qa',
             pass: ''
