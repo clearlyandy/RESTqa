@@ -17,7 +17,7 @@ for (var index in window.modules) {
 }
 
 // Default modules
-var modules = ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.router', 'ui.tree', 'angular-carousel', 'jsonFormatter'];
+var modules = ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.router', 'ui.tree', 'angular-carousel'];
 modules = modules.concat(packageModules);
 
 var app = angular.module('mean', modules);
@@ -215,27 +215,27 @@ app.directive('json', function($compile, $timeout) {
             // Add button
             + '<button class="btn btn-primary" ng-click="addItem(child)">Add</button> ' + '<button class="btn" ng-click="$parent.showAddKey=false">Cancel</button>' + '</span>' + '<span ng-switch-default>'
             // plus button
-            + '<button class="addObjectItemBtn" ng-click="$parent.showAddKey = true"><i class="icon-plus"></i></button>' + '</span>' + '</div>';
+            + '<button class="addObjectItemBtn" ng-click="$parent.showAddKey = true"><i class="glyphicon glyphicon-plus"></i></button>' + '</span>' + '</div>';
 
             // start template
             if (scope.type == "object") {
-                var template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">'
+                var template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">'
                 // repeat
                 + '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">'
                 // object key
                 + '<span class="jsonObjectKey">' + '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>'
                 // delete button
-                + '<i class="deleteKeyBtn icon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>'
+                + '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>'
                 // object value
                 + '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>'
                 // repeat end
                 + addItemTemplate + '</div>';
             } else if (scope.type == "array") {
-                var template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">'
+                var template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">'
                 // repeat
                 + '<li class="arrayItem" ng-repeat="val in child">'
                 // delete button
-                + '<i class="deleteKeyBtn icon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn icon-align-justify"></i>' + '<span>' + switchTemplate + '</span>' + '</li>'
+                + '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>'
                 // repeat end
                 + '</ol>' + addItemTemplate + '</div>';
             } else {

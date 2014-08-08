@@ -15,8 +15,6 @@
   },
   "devDependencies": {
     "components-font-awesome": "~4.1.0",
-    "angular-carousel": "~0.2.5",
-    "json-tree": "~0.0.3",
-    "json-formatter": "*"
+    "angular-carousel": "~0.2.5"
   }
 }
