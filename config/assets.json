@@ -3,7 +3,7 @@
         "css": {
             "bower_components/build/css/dist.min.css": [
                 "bower_components/angular-carousel/dist/angular-carousel.css",
-                "bower_components/json-tree/json-tree.css"
+                "bower_components/json-formatter/lib/json-formatter.css"
             ]
         },
         "js": {
@@ -21,7 +21,7 @@
                 "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
                 "bower_components/angular-touch/angular-touch.js",
                 "bower_components/angular-carousel/dist/angular-carousel.js",
-                "bower_components/json-tree/json-tree.js"
+                "bower_components/json-formatter/lib/json-formatter.js"
             ]
         }
     }

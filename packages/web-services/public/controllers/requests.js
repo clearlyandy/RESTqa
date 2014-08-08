@@ -8,6 +8,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             name: 'requests'
         };
         $scope.parameters = {};
+        $scope.jsonData = {};
+        $scope.response = {};
+        $scope.response.headers = {};
+        $scope.response.body = {};
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -71,39 +75,9 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 requestId: request._id
             }, function(response) {
                 $scope.response = response;
-                $scope.body = defaultData();
-                console.log($scope.body);
-                $scope.jsonData = $scope.body;
-                $scope.nodeOptions.refresh();
-                console.log($scope.nodeOptions);
+                $scope.response.body = JSON.parse(response.body);
             });
         };
-
-        function defaultData() {
-                return {
-                    key1: 'str',
-                    key2: 12.34,
-                    key3: null,
-                    array: [3, 1, 2],
-                    object: {
-                        anotheObject: {
-                            key1: 1,
-                            bool: true
-                        }
-                    },
-                    arrayOfObjects: [{
-                        key1: 'Hello World!'
-                    },{
-                        bool: true,
-                        someFunction: function(){
-                            /* not editable */
-                            return 'some function'
-                        }
-                    }],
-                    key4: undefined
-                };
-            }
-
 
         $scope.find = function() {
             WebServices.get({

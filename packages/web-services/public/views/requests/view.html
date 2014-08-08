@@ -19,24 +19,25 @@
       				</td>
 				<tr>
 				<tr>
-					<td class="kv-key">
+					<td class="kv-key" style="vertical-align: top">
 						Headers
 					</td>
 					<td class="kv-value1">
-						{{response.headers}}
+						<json-formatter open="1" json="response.headers"></json-formatter>
       				</td>
 				<tr>
 				<tr>
-					<td class="kv-key">
+					<td class="kv-key" style="vertical-align: top">
 						Body
 					</td>
 					<td class="kv-value1">
-						{{body}}
-						<json-tree json="jsonData" node="nodeOptions"></json-tree>
+						<json-formatter open="1" json="response.body"></json-formatter>
       				</td>
 				<tr>
 			</tbody>
 		</table>
-
+		<div class="jsonView">
+		 <json child="response.body" type="'object'"></json>
+		</div>
     </section>
 </section>
