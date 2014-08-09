@@ -9,6 +9,10 @@
     font-style: normal;
 }
 
+.fa-bookmark {
+    margin-top:-8px
+}
+
 [class^="icon-"], [class*=" icon-"] {
     font-family: 'icomoon';
     speak: none;
@@ -39,6 +43,7 @@
 
 .content {
     margin-top: 30px;
+    padding-top: 0px;
 }
 
 h2 {
@@ -142,6 +147,10 @@ ul.striped li.selected {
 .red {
     color: red;
 }
+
+.masthead-carousel .carousel-inner {
+    min-height: 0px
+ }
 
 
 /* JSON VIEW */
