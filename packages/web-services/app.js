@@ -53,10 +53,10 @@ WebServices.register(function(app, auth, database) {
     });
     */
 
-    WebServices.aggregateAsset('css', 'mvpready-admin.css');
-    WebServices.aggregateAsset('css', 'mvpready-landing.css');
-    WebServices.aggregateAsset('css', 'mvpready-flat.css');
-    WebServices.aggregateAsset('css', 'web-services.css');
+    WebServices.aggregateAsset('css', 'mvpready-admin.css', {weight:1});
+    WebServices.aggregateAsset('css', 'mvpready-landing.css', {weight:2});
+    WebServices.aggregateAsset('css', 'mvpready-flat.css', {weight:3});
+    WebServices.aggregateAsset('css', 'web-services.css', {weight:4});
 
     return WebServices;
 });

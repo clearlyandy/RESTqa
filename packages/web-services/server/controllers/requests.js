@@ -139,7 +139,7 @@ exports.test = function(req, res) {
         var params = Object.keys(request.parameters).map(function(k) {
             return encodeURIComponent(k) + '=' + encodeURIComponent(request.parameters[k]);
         }).join('&');
-        console.log(params);
+
         var options = {
             host: url.parse(request.web_service.endpoint).host,
             port: 80,
