@@ -23,7 +23,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 var request = new Requests.manager({
                     name: this.name,
                     description: this.description,
-                    parameters: $scope.parameters,
+                    parameters: angular.copy($scope.webservice.parameters),
                     expected_output: this.expected_output,
                     web_service: $stateParams.webserviceId
                 });
@@ -90,9 +90,6 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     $scope.requests = requests;
                 });
             });
-
-
-
         };
 
         $scope.findOne = function() {

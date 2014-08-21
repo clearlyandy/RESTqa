@@ -126,6 +126,23 @@ exports.findOne = function(req, res) {
     });
 };
 
+var getParamObject = function(obj, parent) {
+    if (parent === null) {
+        parent = {};
+    }
+    for (var prop in obj.parameters) {
+        var child = obj.parameters[prop];
+        if (child.data_type === "Object") {
+            parent[child.name] = getParamObject(child, null);
+        } else {
+            parent[child.name] = child.value;
+        }
+    }
+
+    return parent;
+};
+
+
 exports.test = function(req, res) {
     Request.findById(req.params.requestId).sort('-created').populate('user', 'name username').populate('web_service').exec(function(err, request) {
         if (err) {
@@ -135,10 +152,15 @@ exports.test = function(req, res) {
         }
 
         var response = {};
+        console.log(request.parameters);
+        var paramObj = getParamObject(request, null);
+        console.log(paramObj);
 
-        var params = Object.keys(request.parameters).map(function(k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(request.parameters[k]);
+        var params = Object.keys(paramObj).map(function(k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(JSON.stringify(paramObj[k]));
         }).join('&');
+
+        console.log(params);
 
         var options = {
             host: url.parse(request.web_service.endpoint).host,
@@ -146,8 +168,6 @@ exports.test = function(req, res) {
             path: url.parse(request.web_service.endpoint).path + '/?' + params,
             method: request.web_service.request_type
         };
-
-        console.log(options);
 
         var testReq = http.request(options, function(testRes) {
             response.code = JSON.stringify(testRes.statusCode);
@@ -165,6 +185,8 @@ exports.test = function(req, res) {
         testReq.on('error', function(e) {
             res.json(e);
         });
+
+        testReq.write(params);
 
         testReq.end();
     });
