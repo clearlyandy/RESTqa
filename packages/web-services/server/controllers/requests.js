@@ -152,15 +152,14 @@ exports.test = function(req, res) {
         }
 
         var response = {};
-        console.log(request.parameters);
         var paramObj = getParamObject(request, null);
-        console.log(paramObj);
-
         var params = Object.keys(paramObj).map(function(k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(JSON.stringify(paramObj[k]));
+            var value = paramObj[k];
+            if (typeof value === 'object') {
+                value = JSON.stringify(value);
+            }
+            return encodeURIComponent(k) + '=' + encodeURIComponent(value);
         }).join('&');
-
-        console.log(params);
 
         var options = {
             host: url.parse(request.web_service.endpoint).host,

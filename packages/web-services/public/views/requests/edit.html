@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <label class="control-label">{{item.label}}</label>
                     <div>
-                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="parameters[item.name]" id="{{item.name}}" required>
+                        <input name="{{item.name}}" type="text" class="form-control" data-ng-model="item.value" id="{{item.name}}" required>
                         <div ng-show="submitted && requestsForm[item.name].$invalid" class="help-block">
                             <p ng-show="requestsForm[item.name].$error.required">Name is required</p>
                         </div>
@@ -34,8 +34,8 @@
                 </div>
               </div>
             </script>
-            <div ng-show="request.web_service.parameters.length > 0">
-              <div ng-repeat="item in request.web_service.parameters" ng-include="'parameter_renderer.html'"></div>
+            <div ng-show="request.parameters.length > 0">
+              <div ng-repeat="item in request.parameters" ng-include="'parameter_renderer.html'"></div>
             </div>
             <div class="form-group">
                 <label mean-token="'create-request-description'" for="description" class="control-label">Description</label>

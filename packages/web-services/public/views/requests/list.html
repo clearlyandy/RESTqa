@@ -11,14 +11,14 @@
 		<table class="table keyvalue-table">
 			<tbody>
 				<tr data-ng-repeat="request in requests">
-					<td><span class="label" ng-class="{'label-info': webservice.request_type === 'GET', 'label-success': webservice.request_type === 'POST', 'label-danger': webservice.request_type === 'DELETE', 'label-warning': webservice.request_type === 'PUT', 'label-default': webservice.request_type === 'PATCH'}">{{webservice.request_type}}</span> </td>
-					<td class="kv-key">
+					<td width="10%"><span class="label" ng-class="{'label-info': webservice.request_type === 'GET', 'label-success': webservice.request_type === 'POST', 'label-danger': webservice.request_type === 'DELETE', 'label-warning': webservice.request_type === 'PUT', 'label-default': webservice.request_type === 'PATCH'}">{{webservice.request_type}}</span> </td>
+					<td width="20%" class="kv-key">
 						<a data-ng-href="#!/web-services/{{webservice._id}}/requests/{{request._id}}">{{request.name}}</a>
 					</td>
-					<td >
+					<td width="50%" class="description">
 						{{request.description}}
 					</td>
-					<td class="kv-value">
+					<td width="20%" class="kv-value">
 						<a class="btn" href="#!/web-services/{{webservice._id}}/requests/{{request._id}}/edit">
 		                    <i class="glyphicon glyphicon-edit"></i>
 		                </a>

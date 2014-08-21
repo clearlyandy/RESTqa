@@ -152,6 +152,16 @@ ul.striped li.selected {
     min-height: 0px
  }
 
+ .description, .endpoint {
+    word-break: break-all;
+    word-wrap: break-word;
+ }
+
+ .loader {
+    margin-top: 20px;
+    text-align: center;
+ }
+
 
 /* JSON VIEW */
 

@@ -5,10 +5,13 @@
     			<a href="#!/web-services/{{request.web_service._id}}/requests">{{request.web_service.name}}</a> > {{request.name}}
     		</u>
 	        <div class="pull-right">
-	            <a class="btn btn-warning" ng-click="testRequest(request)">Re-run Test</a>
+	            <a class="btn btn-warning" ng-show="hasResponse" ng-click="testRequest(request)">Re-run Test</a>
 	        </div>
 	   </h3>
-        <table class="table keyvalue-table">
+	   <div class="loader" ng-show="!hasResponse">
+	   	<img class="centered" src="web-services/assets/img/preloader.gif" alt="loading..." class="img-responsive" />
+	   </div>
+	   <table class="table keyvalue-table" ng-show="hasResponse">
 			<tbody>
 				<tr>
 					<td class="kv-key">

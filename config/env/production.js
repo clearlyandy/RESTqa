@@ -30,12 +30,15 @@ module.exports = {
         clientSecret: 'SECRET_KEY',
         callbackURL: 'http://localhost:3000/auth/linkedin/callback'
     },
-    emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
+    emailFrom : 'support@rest.qa', // sender address like ABC <abc@example.com>
     mailer: {
-        service: 'SERVICE_PROVIDER',
+        host: 'smtp.zoho.com',
+        secureConnection: true,
+        port: 465, // port for secure SMTP
+        requiresAuth: true,
         auth: {
-            user: 'EMAIL_ID',
-            pass: 'PASSWORD'
+            user: 'support@rest.qa',
+            pass: process.env.EMAIL_PW
         }
     }
 };

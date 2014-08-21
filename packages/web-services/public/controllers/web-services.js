@@ -99,14 +99,11 @@ angular.module('mean.web-services').controller('WebServicesController', ['$scope
             var nodeData;
             if (scope === null) {
                 $scope.parameters.push({
-                    title: null,
                     parameters: []
                 });
             } else {
                 nodeData = scope.$modelValue;
                 nodeData.parameters.push({
-                    id: nodeData.id * 10 + nodeData.parameters.length,
-                    title: nodeData.title + '.' + (nodeData.parameters.length + 1),
                     parameters: []
                 });
             }

@@ -38,7 +38,7 @@ module.exports = {
         requiresAuth: true,
         auth: {
             user: 'support@rest.qa',
-            pass: ''
+            pass: process.env.EMAIL_PW
         }
     }
 };

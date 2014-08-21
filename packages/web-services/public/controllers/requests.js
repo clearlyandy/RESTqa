@@ -12,6 +12,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.response = {};
         $scope.response.headers = {};
         $scope.response.body = {};
+        $scope.hasResponse = false;
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -71,9 +72,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.testRequest = function(request) {
+            $scope.hasResponse = false;
             Requests.tester.get({
                 requestId: request._id
             }, function(response) {
+                $scope.hasResponse = true;
                 $scope.response = response;
                 $scope.response.body = JSON.parse(response.body);
             });
