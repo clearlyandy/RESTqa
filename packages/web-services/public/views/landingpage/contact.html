@@ -1,0 +1,52 @@
+<div data-ng-controller="ContactController" class="content">
+    <div class="container">
+        <h4 class="content-title">
+          <span>Get in Touch</span>
+        </h4>
+        <div ng-hide="sent">
+            <p>Questions, concerns, or feedback?  We'd love to hear it!</p>
+            <br>
+        </div>
+        <div class="alert alert-danger animated fadeIn" ng-show="senderror">Uh oh - there was an error sending the message.  Please try again.</div>
+        <div class="animated fadeIn" ng-show="sent">
+            <p>Message received!</p>
+            <p>We'll get back to you shortly!</b>
+        </div>
+        <form class="form form-horizontal" ng-submit="sendMessage()" ng-hide="(sending || sent) && !senderror">
+          <div class="form-group">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label>Name:</label>
+              <input class="form-control" id="name" name="name" type="text" value="" required="" ng-model="name" >
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <label>Email:</label>
+              <input class="form-control" type="email" id="email" name="email" value="" required="" ng-model="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>Subject:</label>
+              <input class="form-control" id="subject" name="subject" type="text" value="" required="" ng-model="subject">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>Message:</label>
+              <textarea class="form-control" id="text" name="text" rows="6" cols="40" required="" ng-model="text"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <button class="btn btn-primary" type="submit">Send</button>
+            </div>
+          </div>
+        </form>
+    </div> <!-- /.col -->
+    <div class="loader" ng-show="sending && !sent">
+        <img class="centered" src="web-services/assets/img/preloader.gif" alt="loading..." class="img-responsive" />
+    </div>
+</div>

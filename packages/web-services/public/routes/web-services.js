@@ -81,6 +81,10 @@ angular.module('mean.web-services').config(['$stateProvider',
             .state('faq', {
                 url: '/faq',
                 templateUrl: 'web-services/views/landingpage/faq.html'
+            })
+            .state('contact', {
+                url: '/contact',
+                templateUrl: 'web-services/views/landingpage/contact.html'
             });
 
     }

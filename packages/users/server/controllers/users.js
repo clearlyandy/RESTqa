@@ -170,6 +170,7 @@ exports.resetpassword = function(req, res, next) {
     });
 };
 
+
 /**
  * Send reset password email
  */
@@ -180,6 +181,36 @@ function sendMail(mailOptions) {
         return response;
     });
 }
+
+/**
+ * Sends the contact us email
+ */
+
+exports.contactmessage = function(req, res, next) {
+    async.waterfall([
+        function(done) {
+            var mailOptions = {
+                to: "ah@andrewhass.net, support@rest.qa",
+                from: config.emailFrom
+            };
+            mailOptions = templates.contact_email(req, mailOptions);
+            sendMail(mailOptions);
+            done(false, true);
+        }
+    ],
+    function(err, status) {
+        var response = {
+            message: 'Message sent!',
+            status: 'success'
+        };
+        if (err) {
+            response.message = 'Uh oh!';
+            response.status = 'danger';
+        }
+        res.json(response);
+    });
+};
+
 
 /**
  * Callback for forgot password link
