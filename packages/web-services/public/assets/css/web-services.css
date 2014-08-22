@@ -115,6 +115,10 @@ h2 {
     padding-top: 60px;
 }
 
+.copyright {
+    padding: 10px 0;
+}
+
 footer {
     position:fixed;
     bottom:0;
