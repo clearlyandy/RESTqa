@@ -1,5 +1,5 @@
 <div data-ng-controller="RegisterCtrl">
-    <div class="account-wrapper">
+    <div class="account-wrapper" ng-hide="process.env.NODE_ENV === 'development'">
         <div ng-repeat="error in registerError">
             <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
         </div>
@@ -46,4 +46,10 @@
         </div> <!-- /.account-footer -->
 
       </div> <!-- /.account-wrapper -->
+      <div class="account-wrapper" ng-hide="process.env.NODE_ENV !== 'development'">
+        <div>
+            <h3>Registration is currently closed :(</h3>
+            <p><b>REST</b>qa is currently in an early alpha state.  <br />We'll be opening soon!</p>
+        </div>
+      </div>
 </div>
