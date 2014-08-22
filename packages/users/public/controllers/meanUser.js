@@ -40,6 +40,11 @@ angular.module('mean.users')
     .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$location',
         function($scope, $rootScope, $http, $location) {
             $scope.user = {};
+            $scope.environment = null;
+
+            $http.get("/version").then(function (result) {
+                $scope.environment = result.data.NODE_ENV;
+              });
 
             $scope.register = function() {
                 $scope.usernameError = null;
