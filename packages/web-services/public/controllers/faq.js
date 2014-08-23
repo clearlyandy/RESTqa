@@ -9,13 +9,8 @@ angular.module('mean.web-services').controller('FAQController', ['$scope', '$htt
         };
         $scope.faqlist = [
             {
-                title: 'title',
-                text: 'text',
-                active: false
-            },
-            {
-                title: 'title',
-                text: 'text',
+                title: 'When does the service go live?',
+                text: 'RESTQA is in an early alpha state.  We\'ll be opening soon!',
                 active: false
             }
         ];
