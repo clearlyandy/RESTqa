@@ -65,10 +65,9 @@ app.directive('json', function($compile, $timeout) {
         restrict: 'E',
         scope: {
             child: '=',
-            type: '='
+            type: '=',
         },
         link: function(scope, element, attributes) {
-
             var stringName = "Text";
             var objectName = "Catalog"; // or technically more correct: Map
             var arrayName = "List";
@@ -79,7 +78,6 @@ app.directive('json', function($compile, $timeout) {
             //////
             // Helper functions
             //////
-
             var getType = function(obj) {
                 var type = Object.prototype.toString.call(obj);
                 if (type === "[object Object]") {
@@ -110,6 +108,41 @@ app.directive('json', function($compile, $timeout) {
                 obj[newkey] = obj[key];
                 delete obj[key];
             };
+            scope.flagKey = function(obj, key, toggle, parent) {
+                //console.log(obj);
+                //console.log(key);
+                //scope.flagged = true;
+                var s = scope;
+                for (var prop in s.child) {
+                    if (prop !== key) {
+                        delete s.child[prop];
+                    }
+                }
+                while (typeof s.$parent.key !== 'undefined') {
+                    s = s.$parent.$parent;
+                    for (var prop in s.child) {
+                        if (prop !== s.key) {
+                            delete s.child[prop];
+                        }
+                    }
+
+                }
+                scope.rooty = s.child;
+                console.log(scope.rooty);
+
+
+                //obj[key].flagged = true;
+                //console.log(scope);
+                //console.log(obj[key].flagged);
+
+            }
+            scope.setP = function(key) {
+                //console.log(scope.$parent.key)
+
+                //console.log(typeof parent.p);
+                //console.log(parent.p);
+                //console.log(scope.p);
+            }
             scope.deleteKey = function(obj, key) {
                 if (getType(obj) == "Object") {
                     if (confirm('Delete "' + key + '" and all it contains?')) {
@@ -223,7 +256,9 @@ app.directive('json', function($compile, $timeout) {
                 // repeat
                 + '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">'
                 // object key
-                + '<span class="jsonObjectKey">' + '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>'
+                + '<span class="jsonObjectKey">'
+                    + '<input type="checkbox" ng-checked="flagged" name value ng-change="flagKey(child, key, null, $parent)" ng-model="flagged" ng-init="setP(key)"  />'
+                    + '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>'
                 // delete button
                 + '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>'
                 // object value
