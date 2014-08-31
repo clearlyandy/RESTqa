@@ -166,31 +166,31 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     s = s.$parent.$parent.$parent;
                 }
 
-                scope.isolatedBindingAssertion.push({"path": path, "value": obj[key]});
+                scope.isolatedBindingAssertion.push({'path': path, 'value': obj[key]});
                 console.log(scope.isolatedBindingAssertion);
-            }
+            };
             scope.deleteKey = function(obj, key) {
-                if (getType(obj) == 'Object') {
+                if (getType(obj) === 'Object') {
                     if (confirm('Delete ' + key + ' and all it contains?')) {
                         delete obj[key];
                     }
-                } else if (getType(obj) == 'Array') {
+                } else if (getType(obj) === 'Array') {
                     if (confirm('Delete "' + obj[key] + '"?')) {
                         obj.splice(key, 1);
                     }
                 } else {
-                    console.error("object to delete from was " + obj);
+                    console.error('object to delete from was ' + obj);
                 }
             };
             scope.addItem = function(obj) {
-                if (getType(obj) == "Object") {
+                if (getType(obj) === 'Object') {
                     // check input for key
-                    if (scope.keyName == undefined || scope.keyName.length == 0) {
-                        alert("Please fill in a name");
-                    } else if (scope.keyName.indexOf("$") == 0) {
-                        alert("The name may not start with $ (the dollar sign)");
-                    } else if (scope.keyName.indexOf("_") == 0) {
-                        alert("The name may not start with _ (the underscore)");
+                    if (scope.keyName === undefined || scope.keyName.length === 0) {
+                        alert('Please fill in a name');
+                    } else if (scope.keyName.indexOf('$') === 0) {
+                        alert('The name may not start with $ (the dollar sign)');
+                    } else if (scope.keyName.indexOf('_') === 0) {
+                        alert('The name may not start with _ (the underscore)');
                     } else {
                         if (obj[scope.keyName]) {
                             if (!confirm('An item with the name "' + scope.keyName + '" exists already. Do you really want to replace it?')) {
@@ -200,7 +200,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                         // add item to object
                         switch (scope.valueType) {
                             case stringName:
-                                obj[scope.keyName] = scope.valueName ? scope.possibleNumber(scope.valueName) : "";
+                                obj[scope.keyName] = scope.valueName ? scope.possibleNumber(scope.valueName) : '';
                                 break;
                             case objectName:
                                 obj[scope.keyName] = {};
@@ -210,20 +210,20 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                                 break;
                             case refName:
                                 obj[scope.keyName] = {
-                                    "Reference!!!!": "todo"
+                                    'Reference!!!!': 'todo'
                                 };
                                 break;
                         }
                         //clean-up
-                        scope.keyName = "";
-                        scope.valueName = "";
+                        scope.keyName = '';
+                        scope.valueName = '';
                         scope.showAddKey = false;
                     }
-                } else if (getType(obj) == "Array") {
+                } else if (getType(obj) === 'Array') {
                     // add item to array
                     switch (scope.valueType) {
                         case stringName:
-                            obj.push(scope.valueName ? scope.valueName : "");
+                            obj.push(scope.valueName ? scope.valueName : '');
                             break;
                         case objectName:
                             obj.push({});
@@ -233,14 +233,14 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                             break;
                         case refName:
                             obj.push({
-                                "Reference!!!!": "todo"
+                                'Reference!!!!': 'todo'
                             });
                             break;
                     }
-                    scope.valueName = "";
+                    scope.valueName = '';
                     scope.showAddKey = false;
                 } else {
-                    console.error("object to add to was " + obj);
+                    console.error('object to add to was ' + obj);
                 }
             };
             scope.possibleNumber = function(val) {
@@ -262,45 +262,46 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
                 '<div ng-switch on="showAddKey" class="block" >' + '<span ng-switch-when="true">';
-            if (scope.type == "object") {
+            if (scope.type === 'object') {
                 // input key
                 addItemTemplate += '<input placeholder="Name" type="text" ui-keyup="{\'enter\':\'addItem(child)\'}" ' + 'class="input-small addItemKeyInput" ng-model="$parent.keyName" />';
             }
             addItemTemplate +=
             // value type dropdown
-            '<select ng-model="$parent.valueType" ng-options="option for option in valueTypes"' + 'ng-init="$parent.valueType=\'' + stringName + '\'" ui-keydown="{\'enter\':\'addItem(child)\'}"></select>'
+            '<select ng-model="$parent.valueType" ng-options="option for option in valueTypes"' + 'ng-init="$parent.valueType=\'' + stringName + '\'" ui-keydown="{\'enter\':\'addItem(child)\'}"></select>' +
             // input value
-            + '<span ng-show="$parent.valueType == \'' + stringName + '\'"> : <input type="text" placeholder="Value" ' + 'class="input-medium addItemValueInput" ng-model="$parent.valueName" ui-keyup="{\'enter\':\'addItem(child)\'}"/></span> '
+            '<span ng-show="$parent.valueType == \'' + stringName + '\'"> : <input type="text" placeholder="Value" ' + 'class="input-medium addItemValueInput" ng-model="$parent.valueName" ui-keyup="{\'enter\':\'addItem(child)\'}"/></span> ' +
             // Add button
-            + '<button class="btn btn-primary" ng-click="addItem(child)">Add</button> ' + '<button class="btn" ng-click="$parent.showAddKey=false">Cancel</button>' + '</span>' + '<span ng-switch-default>'
+            '<button class="btn btn-primary" ng-click="addItem(child)">Add</button> ' + '<button class="btn" ng-click="$parent.showAddKey=false">Cancel</button>' + '</span>' + '<span ng-switch-default>' +
             // plus button
-            + '<button class="addObjectItemBtn" ng-click="$parent.showAddKey = true"><i class="glyphicon glyphicon-plus"></i></button>' + '</span>' + '</div>';
+            '<button class="addObjectItemBtn" ng-click="$parent.showAddKey = true"><i class="glyphicon glyphicon-plus"></i></button>' + '</span>' + '</div>';
 
             // start template
-            if (scope.type == "object") {
-                var template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">'
+            var template;
+            if (scope.type === 'object') {
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' +
                 // repeat
-                + '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">'
+                '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">' +
                 // object key
-                + '<span class="jsonObjectKey">'
-                    + '<input type="checkbox" name value ng-change="flagKey(child, key, null)" ng-model="flagged"  />'
-                    + '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>'
+                '<span class="jsonObjectKey">' +
+                    '<input type="checkbox" name value ng-change="flagKey(child, key, null)" ng-model="flagged"  />' +
+                    '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>' +
                 // delete button
-                + '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>'
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>' +
                 // object value
-                + '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>'
+                '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>' +
                 // repeat end
-                + addItemTemplate + '</div>';
-            } else if (scope.type == "array") {
-                var template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">'
+                addItemTemplate + '</div>';
+            } else if (scope.type === 'array') {
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
                 // repeat
-                + '<li class="arrayItem" ng-repeat="val in child">'
+                '<li class="arrayItem" ng-repeat="val in child">' +
                 // delete button
-                + '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>'
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
                 // repeat end
-                + '</ol>' + addItemTemplate + '</div>';
+                '</ol>' + addItemTemplate + '</div>';
             } else {
-                console.error("scope.type was " + scope.type);
+                console.error('scope.type was ' + scope.type);
             }
 
             var newElement = angular.element(template);
