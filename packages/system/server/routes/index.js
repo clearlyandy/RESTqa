@@ -9,7 +9,7 @@ module.exports = function(System, app, auth, database) {
 
 	app.get('/version', function(req,res){
         res.json({
-            "NODE_ENV" : process.env.NODE_ENV
+            'NODE_ENV' : process.env.NODE_ENV
         });
     });
 

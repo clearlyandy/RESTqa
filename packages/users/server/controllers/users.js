@@ -190,7 +190,7 @@ exports.contactmessage = function(req, res, next) {
     async.waterfall([
         function(done) {
             var mailOptions = {
-                to: "ah@andrewhass.net, support@rest.qa",
+                to: 'ah@andrewhass.net, support@rest.qa',
                 from: config.emailFrom
             };
             mailOptions = templates.contact_email(req, mailOptions);

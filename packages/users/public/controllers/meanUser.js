@@ -42,7 +42,7 @@ angular.module('mean.users')
             $scope.user = {};
             $scope.environment = null;
 
-            $http.get("/version").then(function (result) {
+            $http.get('/version').then(function (result) {
                 $scope.environment = result.data.NODE_ENV;
               });
 

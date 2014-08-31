@@ -132,7 +132,7 @@ var getParamObject = function(obj, parent) {
     }
     for (var prop in obj.parameters) {
         var child = obj.parameters[prop];
-        if (child.data_type === "Object") {
+        if (child.data_type === 'Object') {
             parent[child.name] = getParamObject(child, null);
         } else {
             parent[child.name] = child.value;
