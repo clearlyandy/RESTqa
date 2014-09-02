@@ -19,12 +19,16 @@
 						{{request.description}}
 					</td>
 					<td width="20%" class="kv-value">
-						<a class="btn" href="#!/web-services/{{webservice._id}}/requests/{{request._id}}/edit">
-		                    <i class="glyphicon glyphicon-edit"></i>
-		                </a>
-		                <a class="btn" data-ng-click="remove(request);">
-		                    <i class="glyphicon glyphicon-trash"></i>
-		                </a>
+						<div class="btn-group" dropdown is-open="status.isopen" style="margin-right:10px">
+					      <a class="dropdown-toggle" href ng-disabled="disabled" aria-haspopup="true">
+					        <i class="glyphicon glyphicon-th-list"></i>
+					      </a>
+					      <ul class="dropdown-menu" role="menu" style="right: 0; left: auto; text-align:left;">
+					        <li><a href="#!/web-services/{{webservice._id}}/requests/{{request._id}}/edit"><i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;Edit Test</a></li>
+					        <li class="divider"></li>
+					        <li><a href data-ng-click="remove(request);"><i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Delete Test</a></li>
+					      </ul>
+					    </div>
       				</td>
 				<tr>
 			</tbody>

@@ -26,15 +26,23 @@
 						{{webservice.endpoint}}
 					</td>
 					<td class="kv-value">
-						<a class="btn" href="#!/web-services/{{web_service._id}}/requests/{{request._id}}/edit">
-		                    <i class="glyphicon glyphicon-dashboard"></i>
-		                </a>
-						<a class="btn" href="/#!/web-services/{{webservice._id}}/edit">
-		                    <i class="glyphicon glyphicon-edit"></i>
-		                </a>
-		                <a class="btn" data-ng-click="remove(webservice);">
-		                    <i class="glyphicon glyphicon-trash"></i>
-		                </a>
+						<div class="btn-group" dropdown is-open="status.isopen" style="margin-right:10px">
+					      <a class="dropdown-toggle" href ng-disabled="disabled" aria-haspopup="true">
+					        <i class="glyphicon glyphicon-th-list"></i>
+					      </a>
+					      <ul class="dropdown-menu" role="menu" style="right: 0; left: auto; text-align:left;">
+					        <li><a href="#!/web-services/{{web_service._id}}/requests/{{request._id}}/edit">
+			                    <i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Quick Test
+			                </a></li>
+			                <li><a href="/#!/web-services/{{webservice._id}}/edit">
+			                    <i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;Edit Web Service
+			                </a></li>
+					        <li class="divider"></li>
+					        <li><a data-ng-click="remove(webservice);">
+			                    <i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Delete Web Service
+			                </a></li>
+					      </ul>
+					    </div>
       				</td>
 				<tr>
 			</tbody>

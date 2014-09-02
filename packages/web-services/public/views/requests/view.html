@@ -1,16 +1,17 @@
 <section >
     <section data-ng-controller="RequestsController" data-ng-init="findOne()" class="col-md-12">
-    	<h3 class="portlet-title">
+    	<div class="loader-holder" >
+			<div class="loader">Loading...</div>
+		</div>
+    	<h3 class="portlet-title" ng-show="hasResponse">
     		<u>
     			<a href="#!/web-services/{{request.web_service._id}}/requests">{{request.web_service.name}}</a> > {{request.name}}
     		</u>
 	        <div class="pull-right">
-	            <a class="btn btn-warning" ng-show="hasResponse" ng-click="testRequest(request)">Re-run Test</a>
+	            <a class="btn btn-warning" ng-show="hasResponse" ng-click="updateAssertions()">Re-run Test</a>
+	            <!--<a class="btn btn-warning" ng-show="hasResponse" ng-click="testRequest(request)">Re-run Test</a>-->
 	        </div>
 	   </h3>
-	   <div class="loader" ng-show="!hasResponse">
-	   	<img class="centered" src="web-services/assets/img/preloader.gif" alt="loading..." class="img-responsive" />
-	   </div>
 	   <table class="table keyvalue-table" ng-show="hasResponse">
 			<tbody>
 				<tr>
@@ -25,7 +26,7 @@
 					<td class="kv-key" colspan="2">
 						<p>Headers</p>
 						<div class="jsonView">
-						 <json child="response.headers" type="'object'" binding-assertion="assertion"></json>
+						 <json child="response.headers" type="'object'" binding-assertions="assertions" editable="false"></json>
 						</div>
 					</td>
 				<tr>
@@ -33,7 +34,7 @@
 					<td class="kv-key" colspan="2">
 						<p>Body</p>
 						<div class="jsonView">
-						 <json child="response.body" type="'object'"></json>
+						 <json child="response.body" type="'object'" binding-assertions="assertions" editable="true"></json>
 						</div>
       				</td>
 				<tr>

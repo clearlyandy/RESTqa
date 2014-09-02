@@ -13,6 +13,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.response.headers = {};
         $scope.response.body = {};
         $scope.hasResponse = false;
+        $scope.assertions = [];
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -72,6 +73,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.testRequest = function(request) {
+            $scope.updateAssertions();
             $scope.hasResponse = false;
             Requests.tester.get({
                 requestId: request._id
@@ -105,16 +107,42 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             });
         };
 
-        $scope.assertion = [];
+        $scope.updateAssertions = function() {
+            var assertions = [];
+            for (var item in $scope.assertions) {
+                var assertion = $scope.assertions[item];
+                var value = assertion.scope.child[assertion.key];
+                var path = assertion.key;
+                var s = assertion.scope.$parent;
+                while (typeof s.key !== 'undefined') {
+                    path = s.key + '.' + path;
+                    s = s.$parent.$parent.$parent;
+                }
+                assertions.push({'key': path, 'value': value});
+            }
+
+            console.log(assertions);
+        };
     }
 ])
+// directive to focus an input element
+// usage: <input type="text" focus />
+/*.directive('focus', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attributes) {
+            element[0].focus();
+        }
+    };
+})*/
 .directive('json', function($compile, $timeout) {
     return {
         restrict: 'E',
         scope: {
             child: '=',
             type: '=',
-            isolatedBindingAssertion:'=bindingAssertion'
+            editable: '=',
+            assertions:'=bindingAssertions'
         },
 
         link: function(scope, element, attributes) {
@@ -158,20 +186,21 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 obj[newkey] = obj[key];
                 delete obj[key];
             };
-            scope.flagKey = function(obj, key, toggle) {
-                var path = key;
-                var s = scope.$parent;
-                while (typeof s.key !== 'undefined') {
-                    path = s.key + '.' + path;
-                    s = s.$parent.$parent.$parent;
+            scope.flagKey = function(obj, key) {
+                var assertionKey = scope.$id + key;
+                if (typeof scope.assertions[assertionKey] === 'undefined') {
+                    scope.assertions[assertionKey] = {'scope': scope,  'key': key, 'value': obj[key]};
+                } else {
+                    delete scope.assertions[assertionKey];
                 }
-
-                scope.isolatedBindingAssertion.push({'path': path, 'value': obj[key]});
-                console.log(scope.isolatedBindingAssertion);
             };
             scope.deleteKey = function(obj, key) {
                 if (getType(obj) === 'Object') {
                     if (confirm('Delete ' + key + ' and all it contains?')) {
+                        var assertionKey = scope.$id + key;
+                        if (typeof scope.assertions[assertionKey] !== 'undefined') {
+                            delete scope.assertions[assertionKey];
+                        }
                         delete obj[key];
                     }
                 } else if (getType(obj) === 'Array') {
@@ -257,11 +286,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
             // recursion
             var switchTemplate =
-                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" child="val" ng-model="newkey"  type="\'object\'" ></json>' + '<json ng-switch-when="Array" child="val" type="\'array\'"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ' + 'placeholder="Empty" ng-model-onblur ng-change="child[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
+                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" child="val" ng-model="newkey" type="\'object\'" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<json ng-switch-when="Array" child="val" type="\'array\'" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="child[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
-                '<div ng-switch on="showAddKey" class="block" >' + '<span ng-switch-when="true">';
+                '<div ng-switch ng-show="editable==true" on="showAddKey" class="block" >' + '<span ng-switch-when="true">';
             if (scope.type === 'object') {
                 // input key
                 addItemTemplate += '<input placeholder="Name" type="text" ui-keyup="{\'enter\':\'addItem(child)\'}" ' + 'class="input-small addItemKeyInput" ng-model="$parent.keyName" />';
@@ -283,11 +312,13 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // repeat
                 '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">' +
                 // object key
-                '<span class="jsonObjectKey">' +
-                    '<input type="checkbox" name value ng-change="flagKey(child, key, null)" ng-model="flagged"  />' +
-                    '<input class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ' + 'ng-change="moveKey(child, key, newkey)"/>' +
+                '<span class="jsonObjectKey">';
+
+                template += '<input ng-show="editable==true" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
+
+                template += '<input ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
                 // delete button
-                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, key)"></i>' + '</span>' +
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-show="editable==true" ng-click="deleteKey(child, key)"></i>' + '</span>' +
                 // object value
                 '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>' +
                 // repeat end
