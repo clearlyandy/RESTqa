@@ -314,7 +314,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // object key
                 '<span class="jsonObjectKey">';
 
-                template += '<input ng-show="editable==true" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
+                template += '<input ng-show="editable==true" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
 
                 template += '<input ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
                 // delete button
@@ -324,7 +324,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // repeat end
                 addItemTemplate + '</div>';
             } else if (scope.type === 'array') {
-                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
+                template = /*'<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' +*/ '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
                 // repeat
                 '<li class="arrayItem" ng-repeat="val in child">' +
                 // delete button

@@ -186,6 +186,10 @@ ul.striped li.selected {
     padding: 0px 0 0 5px;
 }
 
+.jsonView .json-checkbox {
+    margin-right: 10px;
+}
+
 /* inputs */
 .jsonView select {
     margin: 0;

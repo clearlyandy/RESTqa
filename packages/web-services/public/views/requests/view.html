@@ -1,6 +1,6 @@
 <section >
     <section data-ng-controller="RequestsController" data-ng-init="findOne()" class="col-md-12">
-    	<div class="loader-holder" >
+    	<div class="loader-holder" ng-hide="hasResponse" >
 			<div class="loader">Loading...</div>
 		</div>
     	<h3 class="portlet-title" ng-show="hasResponse">
