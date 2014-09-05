@@ -189,8 +189,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             scope.flagKey = function(obj, key) {
                 var assertionKey = scope.$id + key;
                 if (typeof scope.assertions[assertionKey] === 'undefined') {
+                    scope.isFlagged = true;
                     scope.assertions[assertionKey] = {'scope': scope,  'key': key, 'value': obj[key]};
                 } else {
+                    scope.isFlagged = false;
                     delete scope.assertions[assertionKey];
                 }
             };
@@ -314,7 +316,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // object key
                 '<span class="jsonObjectKey">';
 
-                template += '<input ng-show="editable==true" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
+                template += '<input ng-show="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
 
                 template += '<input ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
                 // delete button
