@@ -8,25 +8,25 @@
     			<a href="#!/web-services/{{request.web_service._id}}/requests">{{request.web_service.name}}</a> > {{request.name}}
     		</u>
 	        <div class="pull-right">
-	            <a class="btn btn-warning" ng-show="hasResponse" ng-click="updateAssertions()">Re-run Test</a>
-	            <!--<a class="btn btn-warning" ng-show="hasResponse" ng-click="testRequest(request)">Re-run Test</a>-->
+	        	<a class="btn btn-warning" ng-show="hasResponse" ng-click="testRequest(request)">Re-run Test</a>
+	        	<a class="btn btn-success" ng-show="hasResponse" ng-click="updateAssertions()">Save Assertions</a>
 	        </div>
 	   </h3>
 	   <table class="table keyvalue-table" ng-show="hasResponse">
 			<tbody>
 				<tr>
-					<td class="kv-key">
-						Response Code
-					</td>
-					<td>
-						{{response.code}}
-      				</td>
-				<tr>
-				<tr>
 					<td class="kv-key" colspan="2">
 						<p>Headers</p>
 						<div class="jsonView">
-						 <json child="response.headers" type="'object'" binding-assertions="assertions" editable="false"></json>
+							<span class="block ng-scope" style="margin-left: 25px">
+								<span class="jsonObjectKey">
+									<input class="keyinput ng-pristine ng-valid" type="text" disabled="disabled" value="Response Code">
+								</span>
+								<span class="jsonObjectValue">
+									<input type="text" class="ng-pristine ng-valid" disabled="disabled" value="{{response.code}}">
+								</span>
+							</span>
+						 	<json child="response.headers" type="'object'" binding-assertions="assertions" editable="false"></json>
 						</div>
 					</td>
 				<tr>

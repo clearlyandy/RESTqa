@@ -273,6 +273,11 @@ ul.striped li.selected {
     display: block;
     line-height: 29.4px;
     min-height: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.jsonView .block:last-child {
+    border-bottom: 0px solid #eee;
 }
 .jsonView .brace, .jsonItemDesc {
     font-family: Georgia, serif;

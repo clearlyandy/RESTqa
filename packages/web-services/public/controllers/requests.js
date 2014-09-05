@@ -322,9 +322,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // delete button
                 '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-show="editable==true" ng-click="deleteKey(child, key)"></i>' + '</span>' +
                 // object value
-                '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>' +
+                '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>';
                 // repeat end
-                addItemTemplate + '</div>';
+                if (scope.editable) {
+                    template += addItemTemplate;
+                }
+                template += '</div>';
             } else if (scope.type === 'array') {
                 template = /*'<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' +*/ '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
                 // repeat
@@ -332,7 +335,13 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // delete button
                 '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
                 // repeat end
-                '</ol>' + addItemTemplate + '</div>';
+                '</ol>';
+
+                if (scope.editable) {
+                    template += addItemTemplate;
+                }
+
+                template += '</div>';
             } else {
                 console.error('scope.type was ' + scope.type);
             }
