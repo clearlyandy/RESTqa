@@ -14,8 +14,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.response.body = {};
         $scope.hasResponse = false;
         $scope.assertions = [];
-        $scope.assertions3 = {};
-        $scope.assertions3.body = {};
+        $scope.expecteddata = {};
+        $scope.expecteddata.body = {};
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -80,9 +80,9 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             Requests.tester.get({
                 requestId: request._id
             }, function(response) {
-                $scope.response = response;
-                $scope.response.body = JSON.parse(response.body);
-                $scope.assertions3 = {};
+                $scope.actualdata = response;
+                $scope.actualdata.body = JSON.parse(response.body);
+                $scope.expecteddata = {};
                 var xxx = {
                     "PSInfo": {
                         "EGDQ": {
@@ -90,8 +90,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                         }
                     }
                 };
-                $scope.assertions3.body = $scope.extendDeep(angular.copy($scope.response.body), xxx);
-                console.log($scope.assertions3);
+                $scope.expecteddata.body = $scope.extendDeep(angular.copy($scope.actualdata.body), xxx);
+                console.log($scope.expecteddata);
                 $scope.hasResponse = true;
 
             });
@@ -139,7 +139,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             var assertions = [];
             for (var item in $scope.assertions) {
                 var assertion = $scope.assertions[item];
-                var value = assertion.scope.child[assertion.key];
+                var value = assertion.scope.actualdata[assertion.key];
                 var path = assertion.key;
                 var s = assertion.scope.parent;
                 while (typeof s !== 'undefined') {
@@ -169,10 +169,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         scope: {
             root: '=',
             parent: '=',
-            child: '=',
+            actualdata: '=',
+            expecteddata: "=",
             type: '=',
             editable: '=',
-            assertionchild: "=",
             assertions:'=bindingAssertions'
         },
 
@@ -230,57 +230,20 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 delete obj[key];
             };
 
-            scope.sss = false;
-            scope.assertions2 = [];
             scope.checkAssertion = function(obj, key) {
-                console.log(key);
-                console.log(JSON.stringify(scope.child[key]) == JSON.stringify(scope.assertionchild[key]));
-                var xxx = {
-                    "PSInfo": {
-                        "EGDQ": {
-                            "customQs": 234
-                        }
+                if (!angular.equals(scope.expecteddata[key], scope.actualdata[key])) {
+                    scope.failedAssertions[key] = scope.actualdata[key];
+                    scope.collapsed = false;
+                    var s = scope;
+                    while (typeof s.parent !== 'undefined') {
+                        s.parent.hasChildAssertionFailed = true;
+                        s.parent.flagged = true;
+                        s.parent.collapsed = false;
+                        s = s.parent;
                     }
-                };
 
-
-
-                return false;
-
-                console.log(scope.child);
-                var path = key;
-                var s = scope.parent;
-                while (typeof s !== 'undefined') {
-                    path = s.key + '.' + path;
-                    s = s.parent;
+                    return true;
                 }
-                if (scope.sss === false) {
-                    scope.assertions2.push({key: 'PSInfo.EGDQ.customQs', value: 234});
-                    scope.sss = true;
-                }
-
-                for (var item in scope.assertions2) {
-                    var assertion = scope.assertions2[item];
-                    if (assertion.key === path) {
-                        var assertionKey = scope.flagKey(obj, key);
-
-                        if (assertion.value !== obj[key]) {
-                            scope.failedAssertions[key] = assertion.value;
-                            scope.collapsed = false;
-                            s = scope.$parent;
-                            while (typeof s.parent !== 'undefined') {
-                                s.parent.hasChildAssertionFailed = true;
-                                s.parent.flagged = true;
-                                s.parent.collapsed = false;
-                                s = s.parent;
-                            }
-
-                            return true;
-                        }
-                        break;
-                    }
-                }
-                return false;
             };
 
             scope.hasAssertionFailed = function(key) {
@@ -396,22 +359,22 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
             // recursion
             var switchTemplate =
-                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" child="val" parent="$parent" assertionchild="assertionchild[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertions" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" child="val" type="\'array\'" assertionchild="assertionchild[key]" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="child[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
+                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" expecteddata="val" parent="$parent" actualdata="actualdata[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertions" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" expecteddata="val" type="\'array\'" actualdata="actualdata[key]" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="expecteddata[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
                 '<div ng-switch ng-if="editable==true" on="showAddKey" class="block">' + '<span ng-switch-when="true">';
             if (scope.type === 'object') {
                 // input key
-                addItemTemplate += '<input placeholder="Name" type="text" ui-keyup="{\'enter\':\'addItem(child)\'}" ' + 'class="input-small addItemKeyInput" ng-model="$parent.keyName" />';
+                addItemTemplate += '<input placeholder="Name" type="text" ui-keyup="{\'enter\':\'addItem(expecteddata)\'}" ' + 'class="input-small addItemKeyInput" ng-model="$parent.keyName" />';
             }
             addItemTemplate +=
             // value type dropdown
-            '<select ng-model="$parent.valueType" ng-options="option for option in valueTypes"' + 'ng-init="$parent.valueType=\'' + stringName + '\'" ui-keydown="{\'enter\':\'addItem(child)\'}"></select>' +
+            '<select ng-model="$parent.valueType" ng-options="option for option in valueTypes"' + 'ng-init="$parent.valueType=\'' + stringName + '\'" ui-keydown="{\'enter\':\'addItem(expecteddata)\'}"></select>' +
             // input value
-            '<span ng-show="$parent.valueType == \'' + stringName + '\'"> : <input type="text" placeholder="Value" ' + 'class="input-medium addItemValueInput" ng-model="$parent.valueName" ui-keyup="{\'enter\':\'addItem(child)\'}"/></span> ' +
+            '<span ng-show="$parent.valueType == \'' + stringName + '\'"> : <input type="text" placeholder="Value" ' + 'class="input-medium addItemValueInput" ng-model="$parent.valueName" ui-keyup="{\'enter\':\'addItem(expecteddata)\'}"/></span> ' +
             // Add button
-            '<button class="btn btn-primary" ng-click="addItem(child)">Add</button> ' + '<button class="btn" ng-click="$parent.showAddKey=false">Cancel</button>' + '</span>' + '<span ng-switch-default>' +
+            '<button class="btn btn-primary" ng-click="addItem(expecteddata)">Add</button> ' + '<button class="btn" ng-click="$parent.showAddKey=false">Cancel</button>' + '</span>' + '<span ng-switch-default>' +
             // plus button
             '<button class="addObjectItemBtn" ng-click="$parent.showAddKey = true"><i class="glyphicon glyphicon-plus"></i></button>' + '</span>' + '</div>';
 
@@ -420,18 +383,18 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             if (scope.type === 'object') {
                 template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="initToggle()"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-if="!collapsed">' +
                 // repeat
-                '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">' +
+                '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in expecteddata">' +
                 // object key
                 /*'<span ng-class="{\'alert-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}"' +*/
                 '<span class="jsonObjectKey">';
 
                 /*template += '<span class="alert-danger" ng-show="hasAssertionFailed(key) || hasChildAssertionFailed">*&nbsp;</span>';*/
 
-                template += '<input ng-if="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" ng-init="flagged = checkAssertion(child, key)"  />';
+                template += '<input ng-if="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(expecteddata, key)" ng-model="flagged" ng-init="flagged = checkAssertion(expecteddata, key)"  />';
 
-                template += '<input ng-class="{\'text-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}" ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
+                template += '<input ng-class="{\'text-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}" ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(expecteddata, key, newkey)"/>' +
                 // delete button
-                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-if="editable==true" ng-click="deleteKey(child, key)"></i>' + '</span>' +
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-if="editable==true" ng-click="deleteKey(expecteddata, key)"></i>' + '</span>' +
                 // object value
                 '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span></span>';
                 // repeat end
@@ -440,11 +403,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 }
                 template += '</div>';
             } else if (scope.type === 'array') {
-                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-if="!collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-if="!collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="expecteddata">' +
                 // repeat
-                '<li class="arrayItem" ng-repeat="val in child">' +
+                '<li class="arrayItem" ng-repeat="val in expecteddata">' +
                 // delete button
-                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(child, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(expecteddata, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
                 // repeat end
                 '</ol>';
 
