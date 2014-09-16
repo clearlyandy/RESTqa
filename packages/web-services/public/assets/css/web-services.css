@@ -257,7 +257,6 @@ ul.striped li.selected {
     margin-right: 10px;
     position: relative;
     top: 7px;
-    z-index: 99999999999999;
     cursor: pointer;
 }
 
