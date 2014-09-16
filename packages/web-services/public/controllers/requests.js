@@ -14,6 +14,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         $scope.response.body = {};
         $scope.hasResponse = false;
         $scope.assertions = [];
+        $scope.assertions3 = {};
+        $scope.assertions3.body = {};
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -78,9 +80,20 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             Requests.tester.get({
                 requestId: request._id
             }, function(response) {
-                $scope.hasResponse = true;
                 $scope.response = response;
                 $scope.response.body = JSON.parse(response.body);
+                $scope.assertions3 = {};
+                var xxx = {
+                    "PSInfo": {
+                        "EGDQ": {
+                            "customQs": 234
+                        }
+                    }
+                };
+                $scope.assertions3.body = $scope.extendDeep(angular.copy($scope.response.body), xxx);
+                console.log($scope.assertions3);
+                $scope.hasResponse = true;
+
             });
         };
 
@@ -107,16 +120,31 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             });
         };
 
+        $scope.extendDeep = function extendDeep(dst) {
+            angular.forEach(arguments, function(obj) {
+            if (obj !== dst) {
+              angular.forEach(obj, function(value, key) {
+                if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
+                  extendDeep(dst[key], value);
+                } else {
+                  dst[key] = value;
+                }
+              });
+            }
+            });
+            return dst;
+        };
+
         $scope.updateAssertions = function() {
             var assertions = [];
             for (var item in $scope.assertions) {
                 var assertion = $scope.assertions[item];
                 var value = assertion.scope.child[assertion.key];
                 var path = assertion.key;
-                var s = assertion.scope.$parent;
-                while (typeof s.key !== 'undefined') {
+                var s = assertion.scope.parent;
+                while (typeof s !== 'undefined') {
                     path = s.key + '.' + path;
-                    s = s.$parent.$parent.$parent;
+                    s = s.parent;
                 }
                 assertions.push({'key': path, 'value': value});
             }
@@ -139,9 +167,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
     return {
         restrict: 'E',
         scope: {
+            root: '=',
+            parent: '=',
             child: '=',
             type: '=',
             editable: '=',
+            assertionchild: "=",
             assertions:'=bindingAssertions'
         },
 
@@ -151,6 +182,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             var arrayName = 'List';
             var refName = 'Reference';
 
+            scope.hasChildAssertionFailed = false;
+            scope.failedAssertions = [];
             scope.valueTypes = [stringName, objectName, arrayName, refName];
 
             //////
@@ -172,6 +205,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             scope.getType = function(obj) {
                 return getType(obj);
             };
+
             scope.toggleCollapse = function() {
                 if (scope.collapsed) {
                     scope.collapsed = false;
@@ -181,13 +215,85 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     scope.chevron = 'glyphicon glyphicon-chevron-right';
                 }
             };
+            scope.initToggle = function() {
+                scope.chevron = 'glyphicon glyphicon-chevron-down';
+                if (scope.root === true) {
+                    scope.collapsed = false;
+                } else {
+                    scope.chevron = 'glyphicon glyphicon-chevron-right';
+                    scope.collapsed = true;
+                }
+            };
             scope.moveKey = function(obj, key, newkey) {
                 //moves key to newkey in obj
                 obj[newkey] = obj[key];
                 delete obj[key];
             };
+
+            scope.sss = false;
+            scope.assertions2 = [];
+            scope.checkAssertion = function(obj, key) {
+                console.log(key);
+                console.log(JSON.stringify(scope.child[key]) == JSON.stringify(scope.assertionchild[key]));
+                var xxx = {
+                    "PSInfo": {
+                        "EGDQ": {
+                            "customQs": 234
+                        }
+                    }
+                };
+
+
+
+                return false;
+
+                console.log(scope.child);
+                var path = key;
+                var s = scope.parent;
+                while (typeof s !== 'undefined') {
+                    path = s.key + '.' + path;
+                    s = s.parent;
+                }
+                if (scope.sss === false) {
+                    scope.assertions2.push({key: 'PSInfo.EGDQ.customQs', value: 234});
+                    scope.sss = true;
+                }
+
+                for (var item in scope.assertions2) {
+                    var assertion = scope.assertions2[item];
+                    if (assertion.key === path) {
+                        var assertionKey = scope.flagKey(obj, key);
+
+                        if (assertion.value !== obj[key]) {
+                            scope.failedAssertions[key] = assertion.value;
+                            scope.collapsed = false;
+                            s = scope.$parent;
+                            while (typeof s.parent !== 'undefined') {
+                                s.parent.hasChildAssertionFailed = true;
+                                s.parent.flagged = true;
+                                s.parent.collapsed = false;
+                                s = s.parent;
+                            }
+
+                            return true;
+                        }
+                        break;
+                    }
+                }
+                return false;
+            };
+
+            scope.hasAssertionFailed = function(key) {
+                if (key in scope.failedAssertions) {
+                    return true;
+                }
+                return false;
+            }
+
             scope.flagKey = function(obj, key) {
+                console.log(scope.parent);
                 var assertionKey = scope.$id + key;
+
                 if (typeof scope.assertions[assertionKey] === 'undefined') {
                     scope.isFlagged = true;
                     scope.assertions[assertionKey] = {'scope': scope,  'key': key, 'value': obj[key]};
@@ -195,6 +301,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     scope.isFlagged = false;
                     delete scope.assertions[assertionKey];
                 }
+
+                return assertionKey;
             };
             scope.deleteKey = function(obj, key) {
                 if (getType(obj) === 'Object') {
@@ -288,11 +396,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
             // recursion
             var switchTemplate =
-                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" child="val" ng-model="newkey" type="\'object\'" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<json ng-switch-when="Array" child="val" type="\'array\'" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="child[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
+                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" child="val" parent="$parent" assertionchild="assertionchild[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertions" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" child="val" type="\'array\'" assertionchild="assertionchild[key]" binding-assertions="assertions" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="child[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
-                '<div ng-switch ng-show="editable==true" on="showAddKey" class="block" >' + '<span ng-switch-when="true">';
+                '<div ng-switch ng-if="editable==true" on="showAddKey" class="block">' + '<span ng-switch-when="true">';
             if (scope.type === 'object') {
                 // input key
                 addItemTemplate += '<input placeholder="Name" type="text" ui-keyup="{\'enter\':\'addItem(child)\'}" ' + 'class="input-small addItemKeyInput" ng-model="$parent.keyName" />';
@@ -310,26 +418,29 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             // start template
             var template;
             if (scope.type === 'object') {
-                template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' +
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron"' + ' ng-init="initToggle()"></i>' + '<span ng-class="{invisible: chevron == \'glyphicon glyphicon-chevron-down\'}" class="jsonItemDesc">' + objectName + '</span>' + '<div class="jsonContents" ng-if="!collapsed">' +
                 // repeat
                 '<span class="block" ng-hide="key.indexOf(\'_\') == 0" ng-repeat="(key, val) in child">' +
                 // object key
+                /*'<span ng-class="{\'alert-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}"' +*/
                 '<span class="jsonObjectKey">';
 
-                template += '<input ng-show="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" />';
+                /*template += '<span class="alert-danger" ng-show="hasAssertionFailed(key) || hasChildAssertionFailed">*&nbsp;</span>';*/
 
-                template += '<input ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
+                template += '<input ng-if="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(child, key)" ng-model="flagged" ng-init="flagged = checkAssertion(child, key)"  />';
+
+                template += '<input ng-class="{\'text-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}" ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(child, key, newkey)"/>' +
                 // delete button
-                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-show="editable==true" ng-click="deleteKey(child, key)"></i>' + '</span>' +
+                '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-if="editable==true" ng-click="deleteKey(child, key)"></i>' + '</span>' +
                 // object value
-                '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span>';
+                '<span class="jsonObjectValue">' + switchTemplate + '</span>' + '</span></span>';
                 // repeat end
                 if (scope.editable) {
                     template += addItemTemplate;
                 }
                 template += '</div>';
             } else if (scope.type === 'array') {
-                template = /*'<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="chevron = \'glyphicon glyphicon-chevron-down\'"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' +*/ '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-if="!collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="child">' +
                 // repeat
                 '<li class="arrayItem" ng-repeat="val in child">' +
                 // delete button
