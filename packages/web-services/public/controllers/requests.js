@@ -8,14 +8,10 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             name: 'requests'
         };
         $scope.parameters = {};
-        $scope.jsonData = {};
-        $scope.response = {};
-        $scope.response.headers = {};
-        $scope.response.body = {};
         $scope.hasResponse = false;
-        $scope.assertions = [];
         $scope.expecteddata = {};
-        $scope.expecteddata.body = {};
+        $scope.actualdata = {};
+        $scope.assertions = {};
 
         $scope.hasAuthorization = function(request) {
             if (!request || !request.user) return false;
@@ -80,20 +76,27 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             Requests.tester.get({
                 requestId: request._id
             }, function(response) {
+                // Here's the expected data - the actual
+                // response from the web service request
                 $scope.actualdata = response;
                 $scope.actualdata.body = JSON.parse(response.body);
                 $scope.expecteddata = {};
+
+                // And now let's do a deep merge of the assertions
+                // into a copy of the web service response
                 var xxx = {
-                    "PSInfo": {
-                        "EGDQ": {
-                            "customQs": 234
+                    'PSInfo': {
+                        'EGDQ': {
+                            'customQs': 234
                         }
                     }
                 };
-                $scope.expecteddata.body = $scope.extendDeep(angular.copy($scope.actualdata.body), xxx);
-                console.log($scope.expecteddata);
-                $scope.hasResponse = true;
 
+
+                $scope.expecteddata = $scope.actualdata;
+                $scope.expecteddata.body = $scope.extendDeep(angular.copy($scope.actualdata.body), xxx);
+
+                $scope.hasResponse = true;
             });
         };
 
@@ -136,20 +139,15 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.updateAssertions = function() {
-            var assertions = [];
-            for (var item in $scope.assertions) {
-                var assertion = $scope.assertions[item];
-                var value = assertion.scope.actualdata[assertion.key];
-                var path = assertion.key;
-                var s = assertion.scope.parent;
-                while (typeof s !== 'undefined') {
-                    path = s.key + '.' + path;
-                    s = s.parent;
-                }
-                assertions.push({'key': path, 'value': value});
+            var request = $scope.request;
+            if (!request.updated) {
+                request.updated = [];
             }
 
-            console.log(assertions);
+            request.updated.push(new Date().getTime());
+            request.web_service = request.web_service._id;
+            request.assertions = $scope.assertions;
+            request.$update();
         };
     }
 ])
@@ -170,7 +168,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             root: '=',
             parent: '=',
             actualdata: '=',
-            expecteddata: "=",
+            expecteddata: '=',
             type: '=',
             editable: '=',
             assertions:'=bindingAssertions'
@@ -233,12 +231,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             scope.checkAssertion = function(obj, key) {
                 if (!angular.equals(scope.expecteddata[key], scope.actualdata[key])) {
                     scope.failedAssertions[key] = scope.actualdata[key];
-                    scope.collapsed = false;
+                    //scope.toggleCollapse();
                     var s = scope;
                     while (typeof s.parent !== 'undefined') {
                         s.parent.hasChildAssertionFailed = true;
                         s.parent.flagged = true;
-                        s.parent.collapsed = false;
+                        //scope.toggleCollapse();
                         s = s.parent;
                     }
 
@@ -251,15 +249,25 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                     return true;
                 }
                 return false;
-            }
+            };
 
             scope.flagKey = function(obj, key) {
-                console.log(scope.parent);
                 var assertionKey = scope.$id + key;
 
                 if (typeof scope.assertions[assertionKey] === 'undefined') {
                     scope.isFlagged = true;
-                    scope.assertions[assertionKey] = {'scope': scope,  'key': key, 'value': obj[key]};
+                    var assertion = {};
+                    assertion[key] = obj[key];
+
+                    var s = scope.parent;
+                    while (typeof s !== 'undefined') {
+                        var newObj = {};
+                        newObj[s.key] = assertion;
+                        assertion = newObj;
+                        s = s.parent;
+                    }
+                    scope.assertions = scope.extendDeep(scope.assertions, assertion);
+                    console.log(scope.assertions);
                 } else {
                     scope.isFlagged = false;
                     delete scope.assertions[assertionKey];
@@ -267,6 +275,22 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
                 return assertionKey;
             };
+
+            scope.extendDeep = function extendDeep(dst) {
+                angular.forEach(arguments, function(obj) {
+                if (obj !== dst) {
+                  angular.forEach(obj, function(value, key) {
+                    if (dst[key] && dst[key].constructor && dst[key].constructor === Object) {
+                      extendDeep(dst[key], value);
+                    } else {
+                      dst[key] = value;
+                    }
+                  });
+                }
+                });
+                return dst;
+            };
+
             scope.deleteKey = function(obj, key) {
                 if (getType(obj) === 'Object') {
                     if (confirm('Delete ' + key + ' and all it contains?')) {

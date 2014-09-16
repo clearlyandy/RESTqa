@@ -49,6 +49,7 @@ exports.update = function(req, res) {
     request = _.extend(request, req.body);
 
     request.save(function(err) {
+        console.log(err);
         if (err) {
             return res.json(500, {
                 error: 'Cannot update the request'

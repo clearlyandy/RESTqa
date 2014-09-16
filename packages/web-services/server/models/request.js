@@ -28,9 +28,8 @@ var RequestSchema = new Schema({
         type: Schema.Types.Mixed,
         required: true
     },
-    expected_output: {
-        type: String,
-        trim: true
+    assertions: {
+        type: Schema.Types.Mixed
     },
     web_service: {
         type: Schema.Types.ObjectId,
