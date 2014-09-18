@@ -149,12 +149,21 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
                 var s = assertionItem.scope.parent;
                 while (typeof s !== 'undefined') {
-                    var newObj = {};
-                    newObj[s.key] = assertion;
-                    assertion = newObj;
-                    s = s.parent;
-                }
+                    if (typeof s.key !== 'undefined') {
+                        var newObj = {};
+                        newObj[s.key] = assertion;
+                        assertion = newObj;
+                        s = s.parent;
+                    } else {
+                        var newArr = [];
+                        newArr[s.index] = assertion;
+                        assertion = newArr;
 
+                        console.log(s.index);
+                        s = s.parent;
+                    }
+                }
+                console.log(assertion);
                 $scope.assertions = $scope.extendDeep($scope.assertions, assertion);
             }
 
@@ -162,7 +171,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             if (!request.updated) {
                 request.updated = [];
             }
-
+            console.log($scope.assertions);
             /*request.updated.push(new Date().getTime());
             request.web_service = request.web_service._id;
             request.assertions = $scope.assertions;
@@ -283,12 +292,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 return false;
             };
 
-            scope.flagKey = function(obj, key) {
+            scope.flagKey = function(obj, key, index) {
                 var assertionKey = scope.$id + key;
 
                 if (typeof scope.assertionMap[assertionKey] === 'undefined') {
                     scope.isFlagged = true;
-                    scope.assertionMap[assertionKey] = {'scope': scope,  'key': key, 'value': obj[key]};
+                    scope.assertionMap[assertionKey] = {'scope': scope,  'key': key, 'index': index, 'value': obj[key]};
                 } else {
                     scope.isFlagged = false;
                     delete scope.assertionMap[assertionKey];
@@ -393,7 +402,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
             // recursion
             var switchTemplate =
-                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" expecteddata="val" parent="$parent" actualdata="actualdata[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertionMap" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" expecteddata="val" type="\'array\'" actualdata="actualdata[index]" binding-assertions="assertionMap" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="expecteddata[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
+                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" expecteddata="val" parent="$parent" actualdata="actualdata[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertionMap" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" expecteddata="val" type="\'array\'" parent="$parent" actualdata="actualdata[$index]" binding-assertions="assertionMap" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="expecteddata[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
@@ -427,7 +436,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
                 /*template += '<span class="alert-danger" ng-show="hasAssertionFailed(key) || hasChildAssertionFailed">*&nbsp;</span>';*/
 
-                '<input ng-if="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(expecteddata, key)" ng-model="flagged" ng-init="flagged = checkAssertion(expecteddata, key)"  />' +
+                '<input ng-if="editable==true" ng-check="isFlagged" class="json-checkbox" type="checkbox" name value ng-change="flagKey(expecteddata, key, index)" ng-model="flagged" ng-init="flagged = checkAssertion(expecteddata, key)"  />' +
 
                 '<input ng-class="{\'text-danger\': hasAssertionFailed(key) || hasChildAssertionFailed}" ng-disabled="editable==false" class="keyinput" type="text" ng-model="newkey" ng-init="newkey=key" ng-change="moveKey(expecteddata, key, newkey)"/>' +
                 // delete button
@@ -442,7 +451,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             } else if (scope.type === 'array') {
                 template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span class="jsonItemDesc">' /*+ arrayName*/ + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="expecteddata">' +
                 // repeat
-                '<li class="arrayItem" ng-repeat="val in expecteddata" ng-init="actualdata=parent.parent.actualdata[$index]; traceP(parent.parent.parent)">' +
+                '<li class="arrayItem" ng-repeat="val in expecteddata" ng-init="index=$index">' +
                 // delete button
                 '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(expecteddata, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
                 // repeat end
