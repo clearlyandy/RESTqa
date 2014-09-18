@@ -86,11 +86,11 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // And now let's do a deep merge of the assertions
                 // into a copy of the web service response
                 var xxx = {
-                    'PSInfo': {
+                    /*'PSInfo': {
                         'EGDQ': {
                             'customQs': 234
                         }
-                    }
+                    }*/
                 };
 
 
@@ -248,18 +248,31 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             };
 
             scope.checkAssertion = function(obj, key) {
-                if (!angular.equals(scope.expecteddata[key], scope.actualdata[key])) {
-                    scope.failedAssertions[key] = scope.actualdata[key];
-                    //scope.toggleCollapse();
-                    var s = scope;
-                    while (typeof s.parent !== 'undefined') {
-                        s.parent.hasChildAssertionFailed = true;
-                        s.parent.flagged = true;
-                        //scope.toggleCollapse();
-                        s = s.parent;
+                try {
+                    var condition;
+                    if (typeof key !== 'undefined') {
+                        condition = angular.equals(scope.expecteddata[key], scope.actualdata[key]);
+                    } else {
+                        angular.equals(scope.expecteddata, scope.actualdata);
                     }
+                    if (!condition) {
+                        //scope.failedAssertions[key] = scope.actualdata[key];
+                        //scope.toggleCollapse();
+                        var s = scope;
+                        while (typeof s.parent !== 'undefined') {
+                            s.parent.hasChildAssertionFailed = true;
+                            s.parent.flagged = true;
+                            //scope.toggleCollapse();
+                            s = s.parent;
+                        }
 
-                    return true;
+                        return true;
+                    }
+                } catch (e) {
+                    console.log(scope.actualdata);
+                    /*console.log(key);
+                    console.log(scope.expecteddata[key]);*/
+
                 }
             };
 
@@ -366,8 +379,8 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             scope.possibleNumber = function(val) {
                 return isNumber(val) ? parseFloat(val) : val;
             };
-            scope.traceP = function() {
-                console.log(scope);
+            scope.traceP = function(val) {
+                console.log(val);
             }
 
             //////
@@ -380,7 +393,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
             // recursion
             var switchTemplate =
-                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" expecteddata="val" parent="$parent" actualdata="actualdata[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertionMap" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" expecteddata="val" type="\'array\'" actualdata="actualdata[key]" binding-assertions="assertionMap" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="expecteddata[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
+                '<span ng-switch on="getType(val)" >' + '<json ng-switch-when="Object" root="false" expecteddata="val" parent="$parent" actualdata="actualdata[key]" ng-model="newkey" type="\'object\'" binding-assertions="assertionMap" editable="' + scope.editable + '" ></json>' + '<json ng-switch-when="Array" root="false" expecteddata="val" type="\'array\'" actualdata="actualdata[index]" binding-assertions="assertionMap" editable="' + scope.editable + '"></json>' + '<span ng-switch-default class="jsonLiteral"><input type="text" ng-model="val" ng-disabled="editable==false" placeholder="Empty" ng-model-onblur ng-change="expecteddata[key] = possibleNumber(val)"/>' + '</span>' + '</span>';
 
             // display either "plus button" or "key-value inputs"
             var addItemTemplate =
@@ -427,9 +440,9 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 }
                 template += '</div>';
             } else if (scope.type === 'array') {
-                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span ng-class="chevron" class="jsonItemDesc">' + arrayName + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="expecteddata">' +
+                template = '<i ng-click="toggleCollapse()" ng-class="chevron" ng-init="initToggle()"></i>' + '<span class="jsonItemDesc">' /*+ arrayName*/ + '</span>' + '<div class="jsonContents" ng-hide="collapsed">' + '<ol class="arrayOl" ui-multi-sortable ng-model="expecteddata">' +
                 // repeat
-                '<li class="arrayItem" ng-repeat="val in expecteddata">' +
+                '<li class="arrayItem" ng-repeat="val in expecteddata" ng-init="actualdata=parent.parent.actualdata[$index]; traceP(parent.parent.parent)">' +
                 // delete button
                 '<i class="deleteKeyBtn glyphicon glyphicon-trash" ng-click="deleteKey(expecteddata, $index)"></i>' + '<i class="moveArrayItemBtn fa fa-bars"></i>' + '<span>' + switchTemplate + '</span>' + '</li>' +
                 // repeat end
