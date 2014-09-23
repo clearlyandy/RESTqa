@@ -95,7 +95,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
 
 
                 $scope.expecteddata = $scope.actualdata;
-                $scope.expecteddata.body = $.extend(angular.copy($scope.actualdata.body), xxx);
+                $scope.expecteddata.body = window.$.extend(angular.copy($scope.actualdata.body), xxx);
 
                 $scope.hasResponse = true;
             });
@@ -146,7 +146,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                         s = s.parent;
                     }
                 }
-                $scope.assertions = $.extend(true, {}, $scope.assertions, assertion);
+                $scope.assertions = window.$.extend(true, {}, $scope.assertions, assertion);
             }
 
             var request = $scope.request;
