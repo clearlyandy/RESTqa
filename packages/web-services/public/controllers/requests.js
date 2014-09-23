@@ -72,7 +72,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
         };
 
         $scope.testRequest = function(request) {
-            $scope.updateAssertions();
+            //$scope.updateAssertions();
             $scope.hasResponse = false;
             Requests.tester.get({
                 requestId: request._id
@@ -81,21 +81,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
                 // response from the web service request
                 $scope.actualdata = response;
                 $scope.actualdata.body = JSON.parse(response.body);
-                $scope.expecteddata = {};
 
                 // And now let's do a deep merge of the assertions
                 // into a copy of the web service response
-                var xxx = {
-                    /*'PSInfo': {
-                        'EGDQ': {
-                            'customQs': 234
-                        }
-                    }*/
-                };
-
-
-                $scope.expecteddata = $scope.actualdata;
-                $scope.expecteddata.body = window.$.extend(angular.copy($scope.actualdata.body), xxx);
+                $scope.expecteddata = {};
+                $scope.expecteddata = angular.copy($scope.actualdata);
+                $scope.expecteddata.body = window.$.extend({}, $scope.expecteddata.body, $scope.assertions);
 
                 $scope.hasResponse = true;
             });
@@ -120,6 +111,7 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             }, function(request) {
                 $scope.request = request;
                 $scope.parameters = request.parameters;
+                $scope.assertions = request.assertions;
                 $scope.testRequest(request);
             });
         };
@@ -240,10 +232,12 @@ angular.module('mean.web-services').controller('RequestsController', ['$scope', 
             scope.checkAssertion = function(obj, key) {
                 try {
                     var condition;
-                    if (typeof key !== 'undefined') {
+                    if (key == "Age")
+                        console.log(scope.expecteddata[key] + "=" + scope.actualdata[key])
+                    if (typeof key !== 'undefined' && scope.expecteddata[key] !== null) {
                         condition = angular.equals(scope.expecteddata[key], scope.actualdata[key]);
                     } else {
-                        angular.equals(scope.expecteddata, scope.actualdata);
+                        condition = angular.equals(scope.expecteddata, scope.actualdata);
                     }
                     if (!condition) {
                         //scope.failedAssertions[key] = scope.actualdata[key];
